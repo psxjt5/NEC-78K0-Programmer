@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ConsoleLog.h"
+
 #include <Arduino.h>
 
 extern int     PROG_SCK;       // Connects to: TX

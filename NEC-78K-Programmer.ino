@@ -5,6 +5,7 @@
 */
 
 #include "NEC78K-Programmer.h"
+#include "ConsoleLog.h"
 
 // Pin Definitons
 #define     PIN_SCK        2       // Connects to: TX
@@ -16,6 +17,9 @@
 
 void setup() {
     pinMode(LED_BUILTIN, OUTPUT);
+
+    // Enable Console Output.
+    InitialiseConsole(19200, true);
 
     // Define Pins.
     InitialiseProgrammer(PIN_SCK, PIN_RX, PIN_TX, PIN_RESET, PIN_EN, PIN_VDD);
