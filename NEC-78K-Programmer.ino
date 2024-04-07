@@ -16,8 +16,6 @@
 
 void setup() {
     pinMode(LED_BUILTIN, OUTPUT);
-    pinMode(PROG_EN, OUTPUT);
-    pinMode(PROG_VDD, OUTPUT);
 
     InitialiseProgrammer(PROG_SCK, PROG_RX, PROG_TX, PROG_RESET, PROG_EN, PROG_VDD);
     PowerOnChip();

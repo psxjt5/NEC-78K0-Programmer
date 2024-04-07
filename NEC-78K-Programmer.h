@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Arduino.h>
+
 int     PROG_SCK;       // Connects to: TX
 int     PROG_RX;        // Connects to: SO10
 int     PROG_TX;        // Connects to: RX
