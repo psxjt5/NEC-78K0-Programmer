@@ -4,6 +4,8 @@
     James.Todd@nottingham.ac.uk
 */
 
+#include "NEC-78K-Programmer.h"
+
 // Pin Definitons
 #define     PROG_SCK        2       // Connects to: TX
 #define     PROG_RX         3       // Connects to: SO10
@@ -15,13 +17,11 @@
 void setup() {
     pinMode(LED_BUILTIN, OUTPUT);
     pinMode(PROG_EN, OUTPUT);
+    pinMode(PROG_VDD, OUTPUT);
+
+    InitialiseProgrammer(PROG_SCK, PROG_RX, PROG_TX, PROG_RESET, PROG_EN, PROG_VDD);
+    PowerOnChip();
 }
 
 void loop() {
-    digitalWrite(LED_BUILTIN, HIGH);
-    //digitalWrite(PROG_EN, HIGH);
-    delay(1000);
-    digitalWrite(LED_BUILTIN, LOW);
-    //digitalWrite(PROG_EN, LOW);
-    delay(1000);
 }
