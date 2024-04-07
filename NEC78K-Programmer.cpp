@@ -97,6 +97,24 @@ bool SynchronisationDetectionProcessing() {
 
 }
 
+void PowerDownChip() {
+
+    OutputToConsole("Powering Down Chip.");
+
+    // Connect the RESET pin to ground.
+    OutputToConsoleDebug("RESET = LOW");
+    digitalWrite(PROG_PIN_RESET, LOW);
+
+    // Disconnect power from the VPP Pin.
+    OutputToConsoleDebug("VPP (ENABLE) = LOW");
+    digitalWrite(PROG_PIN_EN, LOW);
+
+    // Disconnect power from the VDD Pin.
+    OutputToConsoleDebug("VDD = LOW");
+    digitalWrite(PROG_PIN_VDD, LOW);
+
+}
+
 
 
 void ClockPulse() {
