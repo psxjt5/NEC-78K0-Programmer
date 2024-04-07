@@ -19,7 +19,7 @@ void setup() {
     pinMode(LED_BUILTIN, OUTPUT);
 
     // Enable Console Output.
-    InitialiseConsole(19200);
+    InitialiseConsole(19200, true);
 
     // Define Pins.
     InitialiseProgrammer(PIN_SCK, PIN_RX, PIN_TX, PIN_RESET, PIN_EN, PIN_VDD);
