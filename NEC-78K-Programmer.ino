@@ -28,8 +28,10 @@ void setup() {
     PowerOnChip();
     SelectCommunicationMethod(PROG_MODE_3IO_C0);
 
-    // Synchronisation Detection Synchronise
-    SynchronisationDetectionProcessing();
+    // Synchronisation Detection Processing
+    if (SynchronisationDetectionProcessing()) {
+        
+    }
 }
 
 void loop() {

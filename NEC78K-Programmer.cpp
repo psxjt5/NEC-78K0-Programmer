@@ -74,16 +74,30 @@ void SelectCommunicationMethod(PROG_MODE ProgrammingMode) {
     }    
 }
 
-void SynchronisationDetectionProcessing() {
+bool SynchronisationDetectionProcessing() {
     
     // Wait for the chip to Initialise.
     OutputToConsole("Waiting for Chip Initialisation");
     delay(100);
 
     // Send the Reset Command.
-    SendCommand(PROG_CMD_RESET);
+    OutputToConsole("Sending Reset Command");
+    for (int i = 0; i < 16; i++)
+    {
+        SendCommand(PROG_CMD_RESET);
+        if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
+            OutputToConsole("Received Acknowledgement Response from Microcontroller.");
+            return true;
+        }
+    }
+    
+    // An issue has occurred
+    OutputToConsole("Acknowledgement not received from Microcontroller.");
+    return false;
 
 }
+
+
 
 void ClockPulse() {
 
@@ -98,7 +112,7 @@ void ClockPulse() {
 
 void SendCommand(PROG_CMD Command) {
 
-    // Send each bit of the byte, whilst flipping the clock.
+    // Send each bit of the byte, whilst ticking the clock.
 
     for (int i = 7; i >= 0; i--)
     {
@@ -111,4 +125,20 @@ void SendCommand(PROG_CMD Command) {
 
     // Delay to allow the Microcontroller to respond.
     delay(PROG_DELAY_COMACK);
+}
+
+bool ReceiveCommand(PROG_CMD_RETURN ReturnCode) {
+
+    // Receive each bit of the byte after each clock pulse.
+
+    int Command = 0;
+
+    for (int i = 7; i >= 0; i--)
+    {
+        (Command << 1) + digitalRead(PROG_PIN_RX);
+        ClockPulse();
+    }
+
+    return Command == ReturnCode;
+
 }

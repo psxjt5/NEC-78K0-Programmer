@@ -42,7 +42,7 @@ enum PROG_MODE {
 
 // Programmer Commands
 enum PROG_CMD {
-    PROG_CMD_RESET          = 0xFF,     // Initialises the Flash Mode and Confirms Synchronisation. CHANGED
+    PROG_CMD_RESET          = 0x00,     // Initialises the Flash Mode and Confirms Synchronisation.
     PROG_CMD_OSC_FREQ       = 0x90,     // Notifies the Microcontroller of its Operating Clock.
     PROG_CMD_ERASE_TIME     = 0x95,     // Sets the Microcontroller's Erase Time.
     PROG_CMD_BAUD_RATE      = 0x9A,     // Sets the Baud Rate (UART Mode only).
@@ -57,13 +57,19 @@ enum PROG_CMD {
     PROG_CMD_STATUS_CHK     = 0x70      // Gets the Microcontroller's Internal Command Execution Status.
 };
 
+// Microcontroller Return Commands
+enum PROG_CMD_RETURN {
+    PROG_CMD_RETURN_ACK     = 0x3C,     // Acknowledgement.
+    PROG_CMD_RETURN_NACK    = 0xFF      // Non-Acknowledgement.
+};
 
 // Programming Routines
 void InitialiseProgrammer(int PIN_SCK, int PIN_RX, int PIN_TX, int PIN_RESET, int PIN_VPP, int PIN_VDD);
 void PowerOnChip();
 void SelectCommunicationMethod(PROG_MODE ProgrammingMode);
-void SynchronisationDetectionProcessing();
+bool SynchronisationDetectionProcessing();
 
 // Utility Subroutines
 void ClockPulse();
 void SendCommand(PROG_CMD Command);
+bool ReceiveCommand(PROG_CMD_RETURN ReturnCode);
