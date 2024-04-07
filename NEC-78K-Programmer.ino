@@ -27,6 +27,9 @@ void setup() {
     // Power on and select Comms Mode.
     PowerOnChip();
     SelectCommunicationMethod(PROG_MODE_3IO_C0);
+
+    // Synchronisation Detection Synchronise
+    SynchronisationDetectionProcessing();
 }
 
 void loop() {
