@@ -30,8 +30,11 @@ void setup() {
 
     // Synchronisation Detection Processing
     if (SynchronisationDetectionProcessing()) {
-        
+
     }
+
+    // Power Down the Chip Safely.
+    PowerDownChip();
 }
 
 void loop() {
