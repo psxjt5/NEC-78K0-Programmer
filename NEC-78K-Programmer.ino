@@ -17,8 +17,12 @@
 void setup() {
     pinMode(LED_BUILTIN, OUTPUT);
 
+    // Define Pins.
     InitialiseProgrammer(PROG_SCK, PROG_RX, PROG_TX, PROG_RESET, PROG_EN, PROG_VDD);
+
+    // Power on and select Comms Mode.
     PowerOnChip();
+    SelectCommunicationMethod(PROG_MODE_3IO_C0);
 }
 
 void loop() {

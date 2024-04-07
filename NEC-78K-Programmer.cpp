@@ -32,3 +32,13 @@ void PowerOnChip() {
     digitalWrite(PROG_RESET, HIGH);
     delay(2);
 }
+
+void SelectCommunicationMethod(PROG_MODE ProgrammingMode) {
+    for (int i = 0; i <= ProgrammingMode; i++)
+    {
+        digitalWrite(PROG_EN, LOW);
+        delayMicroseconds(30);
+        digitalWrite(PROG_EN, HIGH);
+        delayMicroseconds(30);
+    }    
+}
