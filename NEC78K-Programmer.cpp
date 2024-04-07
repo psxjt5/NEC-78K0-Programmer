@@ -56,7 +56,7 @@ void SelectCommunicationMethod(PROG_MODE ProgrammingMode) {
 
     OutputToConsoleDebug("Selecting Communication Method: " + String(ProgrammingMode) + ".");
 
-    for (int i = 0; i <= ProgrammingMode; i++)
+    for (int i = 0; i < ProgrammingMode; i++)
     {
         OutputToConsoleDebug("VPP (ENABLE) = LOW");
         digitalWrite(PROG_EN, LOW);
