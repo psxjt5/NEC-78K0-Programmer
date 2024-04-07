@@ -4,21 +4,21 @@
     James.Todd@nottingham.ac.uk
 */
 
-#include "NEC-78K-Programmer.h"
+#include "NEC78K-Programmer.h"
 
 // Pin Definitons
-#define     PROG_SCK        2       // Connects to: TX
-#define     PROG_RX         3       // Connects to: SO10
-#define     PROG_TX         4       // Connects to: RX
-#define     PROG_RESET      5       // Connects to: RESET
-#define     PROG_EN         6       // Connects to: VPP
-#define     PROG_VDD        7       // Connects to: VDD
+#define     PIN_SCK        2       // Connects to: TX
+#define     PIN_RX         3       // Connects to: SO10
+#define     PIN_TX         4       // Connects to: RX
+#define     PIN_RESET      5       // Connects to: RESET
+#define     PIN_EN         6       // Connects to: VPP
+#define     PIN_VDD        7       // Connects to: VDD
 
 void setup() {
     pinMode(LED_BUILTIN, OUTPUT);
 
     // Define Pins.
-    InitialiseProgrammer(PROG_SCK, PROG_RX, PROG_TX, PROG_RESET, PROG_EN, PROG_VDD);
+    InitialiseProgrammer(PIN_SCK, PIN_RX, PIN_TX, PIN_RESET, PIN_EN, PIN_VDD);
 
     // Power on and select Comms Mode.
     PowerOnChip();

@@ -2,12 +2,12 @@
 
 #include <Arduino.h>
 
-int     PROG_SCK;       // Connects to: TX
-int     PROG_RX;        // Connects to: SO10
-int     PROG_TX;        // Connects to: RX
-int     PROG_RESET;     // Connects to: RESET
-int     PROG_EN;        // Connects to: VPP
-int     PROG_VDD;       // Connects to: VDD
+extern int     PROG_SCK;       // Connects to: TX
+extern int     PROG_RX;        // Connects to: SO10
+extern int     PROG_TX;        // Connects to: RX
+extern int     PROG_RESET;     // Connects to: RESET
+extern int     PROG_EN;        // Connects to: VPP
+extern int     PROG_VDD;       // Connects to: VDD
 
 enum PROG_MODE {
     PROG_MODE_3IO_C0 = 0,
