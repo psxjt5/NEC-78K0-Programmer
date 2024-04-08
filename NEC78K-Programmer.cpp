@@ -149,13 +149,21 @@ bool ReceiveCommand(PROG_CMD_RETURN ReturnCode) {
 
     // Receive each bit of the byte after each clock pulse.
 
-    int Command = 0;
+    byte Command = 0;
 
-    for (int i = 7; i >= 0; i--)
+    for (int i = 0; i < 8; i++)
     {
-        (Command << 1) + digitalRead(PROG_PIN_RX);
         ClockPulse();
+        int CurrentByte = digitalRead(PROG_PIN_RX);
+
+        OutputToConsoleDebug("Read (Bit): " + String(CurrentByte));
+
+        if (CurrentByte == 1) {
+            bitSet(Command, i);
+        }
     }
+
+    OutputToConsoleDebug("Read (Byte): " + String(Command));
 
     // Implement the delay to prevent commands from being sent straight away.
     delay(PROG_DELAY_ACKCOM);
