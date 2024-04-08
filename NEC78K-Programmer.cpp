@@ -81,9 +81,9 @@ bool SynchronisationDetectionProcessing() {
     delay(100);
 
     // Send the Reset Command.
-    OutputToConsole("Sending Reset Command");
     for (int i = 0; i < 16; i++)
     {
+        OutputToConsole("Sending Reset Command, Attempt: " + String(int(i + 1)));
         SendCommand(PROG_CMD_RESET);
         if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
             OutputToConsole("Received Acknowledgement Response from Microcontroller.");

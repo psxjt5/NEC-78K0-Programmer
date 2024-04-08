@@ -24,18 +24,25 @@ void setup() {
     // Define Pins.
     InitialiseProgrammer(PIN_SCK, PIN_RX, PIN_TX, PIN_RESET, PIN_EN, PIN_VDD);
 
-    // Power on and select Comms Mode.
-    PowerOnChip();
-    SelectCommunicationMethod(PROG_MODE_3IO_C0);
-
-    // Synchronisation Detection Processing
-    if (SynchronisationDetectionProcessing()) {
-
-    }
-
-    // Power Down the Chip Safely.
-    PowerDownChip();
+    OutputToConsole("Ready to begin...");
 }
 
 void loop() {
+
+    while (Serial.available() > 0) {
+
+        if (Serial.read() == 'A') {
+            // Power on and select Comms Mode.
+            PowerOnChip();
+            SelectCommunicationMethod(PROG_MODE_3IO_C0);
+
+            // Synchronisation Detection Processing
+            if (SynchronisationDetectionProcessing()) {
+
+            }
+
+            // Power Down the Chip Safely.
+            PowerDownChip();
+        }
+    }
 }
