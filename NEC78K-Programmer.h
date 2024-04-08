@@ -6,9 +6,10 @@
 
 // Timings
 # pragma region PROG_DELAYS
-#define     PROG_DELAY_SCKFREQ      10
-#define     PROG_DELAY_COMACK       900
-#define     PROG_DELAY_ACKCOM       170
+#define     PROG_DELAY_SCKFREQ      10          // Frequency of the Software (Programmers) Clock.
+#define     PROG_DELAY_COMACK       900         // Delay between sending a command and attempting to read the response from the Microcontroller.
+#define     PROG_DELAY_ACKCOM       170         // Delay between receiving a response from the Microcontroller and attempting to send another command.
+
 # pragma endregion PROG_DELAYS
 
 // Programmer Pins

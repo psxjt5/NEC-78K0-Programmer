@@ -157,6 +157,10 @@ bool ReceiveCommand(PROG_CMD_RETURN ReturnCode) {
         ClockPulse();
     }
 
+    // Implement the delay to prevent commands from being sent straight away.
+    delay(PROG_DELAY_ACKCOM);
+
+    // Check if the response from the Microcontroller is the expected one.
     return Command == ReturnCode;
 
 }
