@@ -69,6 +69,7 @@ void InitialiseProgrammer(int PIN_SCK, int PIN_RX, int PIN_TX, int PIN_RESET, in
 void PowerOnChip();
 void SelectCommunicationMethod(PROG_MODE ProgrammingMode);
 bool SynchronisationDetectionProcessing();
+void OscillationFrequencySetting();
 void PowerDownChip();
 
 // Utility Subroutines

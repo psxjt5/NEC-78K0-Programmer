@@ -83,7 +83,7 @@ bool SynchronisationDetectionProcessing() {
     // Send the Reset Command.
     for (int i = 0; i < 16; i++)
     {
-        OutputToConsole("Sending Reset Command, Attempt: " + String(int(i + 1)));
+        OutputToConsoleDebug("Sending Reset Command, Attempt: " + String(int(i + 1)));
         SendCommand(PROG_CMD_RESET);
         if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
             OutputToConsole("Received Acknowledgement Response from Microcontroller.");
@@ -94,6 +94,19 @@ bool SynchronisationDetectionProcessing() {
     // An issue has occurred
     OutputToConsole("Acknowledgement not received from Microcontroller.");
     return false;
+
+}
+
+void OscillationFrequencySetting() {
+    
+    OutputToConsole("Setting Oscillation Frequency.");
+
+    // Send the Oscillation Frequency command.
+    OutputToConsoleDebug("Sending Oscillation Frequency Setting Command.");
+    SendCommand(PROG_CMD_OSC_FREQ);
+    if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
+        
+    }
 
 }
 
