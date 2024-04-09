@@ -149,6 +149,52 @@ bool OscillationFrequencySetting(int High, int Mid, int Low, int Exp) {
 
 }
 
+bool FlashEraseTimeSetting(int High, int Mid, int Low, int Exp) {
+
+    OutputToConsole("Setting Flash Erase Time.");
+
+    // Send the Oscillation Frequency command.
+    OutputToConsoleDebug("Sending Flash Erase Time Command.");
+    SendCommand(PROG_CMD_ERASE_TIME);
+    Delay(PROG_DELAY_COMACK);
+    
+    // Check if the command was acknowledged.
+    if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
+        OutputToConsoleDebug("Received Flash Erase Time Acknowledgement.");
+
+        Delay(PROG_DELAY_ACKDAT);
+
+        OutputToConsoleDebug("Sending High Byte: " + String(High));
+        SendData(High);
+        Delay(PROG_DELAY_DATDAT);
+        
+        OutputToConsoleDebug("Sending Mid Byte: " + String(Mid));
+        SendData(Mid);
+        Delay(PROG_DELAY_DATDAT);
+        
+        OutputToConsoleDebug("Sending Low Byte: " + String(Low));
+        SendData(Low);
+        Delay(PROG_DELAY_DATDAT);
+        
+        OutputToConsoleDebug("Sending Exponent Byte: " + String(Exp));
+        SendData(Exp);
+        Delay(PROG_DELAY_FRQCAL);
+
+        OutputToConsoleDebug("Sending Flash Erase Time Set Command.");
+        if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
+            OutputToConsoleDebug("Received Flash Erase Time Setting Acknowledgement.");
+            Delay(PROG_DELAY_ACKCOM);
+            OutputToConsole("Flash Erase Time Set.");
+            return true;
+        }
+    }
+    
+    Delay(PROG_DELAY_ACKCOM);
+    OutputToConsole("Flash Erase Time Setting Failed.");
+    return false;
+
+}
+
 void PowerDownChip() {
 
     OutputToConsole("Powering Down Chip.");
