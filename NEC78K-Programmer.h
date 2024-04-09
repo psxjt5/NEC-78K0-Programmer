@@ -77,6 +77,7 @@ void SelectCommunicationMethod(PROG_MODE ProgrammingMode);
 bool SynchronisationDetectionProcessing();
 bool OscillationFrequencySetting(int High, int Mid, int Low, int Exp);
 bool FlashEraseTimeSetting(int High, int Mid, int Low, int Exp);
+bool GetSiliconeSignatureData();
 void PowerDownChip();
 
 // Utility Subroutines

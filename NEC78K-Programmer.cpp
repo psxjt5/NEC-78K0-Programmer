@@ -195,6 +195,10 @@ bool FlashEraseTimeSetting(int High, int Mid, int Low, int Exp) {
 
 }
 
+bool GetSiliconeSignatureData() {
+    
+}
+
 void PowerDownChip() {
 
     OutputToConsole("Powering Down Chip.");
