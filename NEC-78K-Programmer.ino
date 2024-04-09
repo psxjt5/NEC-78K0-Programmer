@@ -36,13 +36,25 @@ void loop() {
             PowerOnChip();
             SelectCommunicationMethod(PROG_MODE_3IO_C0);
 
-            // Synchronisation Detection Processing
-            if (SynchronisationDetectionProcessing()) {
-
-                // Set the Oscillation Frequency.
-                OscillationFrequencySetting(1, 0, 0, 5);
-
+            // Synchronisation Detection Processing.
+            if (!SynchronisationDetectionProcessing()) {
+                PowerDownChip();
+                return;
             }
+          
+            // Set the Oscillation Frequency.
+            if (!OscillationFrequencySetting(10, 0, 0, 4)) {
+                PowerDownChip();
+                return;
+            }
+
+            // Set the Flash Erase Time Frequency.
+            // if (!FlashEraseTimeSetting(2, 0, 0, 1)) {
+            //     PowerDownChip();
+            //     return;
+            // }
+
+            
 
             // Power Down the Chip Safely.
             PowerDownChip();
