@@ -40,7 +40,7 @@ void loop() {
             if (SynchronisationDetectionProcessing()) {
 
                 // Set the Oscillation Frequency.
-                OscillationFrequencySetting(10, 0, 0, 4);
+                OscillationFrequencySetting(1, 0, 0, 5);
 
             }
 

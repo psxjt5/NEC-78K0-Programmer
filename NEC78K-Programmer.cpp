@@ -198,12 +198,9 @@ void SendCommand(PROG_CMD Command) {
 
     // Send each bit of the byte, whilst ticking the clock.
 
-    byte currentCommand = Command;
-
     for (int i = 7; i >= 0; i--)
     {
-        currentCommand = currentCommand >> i;
-        digitalWrite(PROG_PIN_TX, (currentCommand & 0x01));
+        digitalWrite(PROG_PIN_TX, ((Command >> i) & 0x01));
         ClockPulse();
     }
 
@@ -215,12 +212,9 @@ void SendData(byte Data) {
     
     // Send each bit of the byte, whilst ticking the clock.
 
-    byte currentData = Data;
-
     for (int i = 7; i >= 0; i--)
     {
-        currentData = currentData >> i;
-        digitalWrite(PROG_PIN_TX, (currentData & 0x01));
+        digitalWrite(PROG_PIN_TX, ((Data >> i) & 0x01));
         ClockPulse();
     }
 
