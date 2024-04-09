@@ -36,12 +36,12 @@ void PowerOnChip() {
     // Connect the RESET pin to ground.
     OutputToConsoleDebug("RESET = LOW");
     digitalWrite(PROG_PIN_RESET, LOW);
-    delay(2);
+    Delay(PROG_DELAY_POWERON);
 
     // Apply power to the VDD Pin.
     OutputToConsoleDebug("VDD = HIGH");
     digitalWrite(PROG_PIN_VDD, HIGH);
-    delay(2);
+    Delay(PROG_DELAY_POWERON);
 
     // Apply power to the SCK Pin.
     OutputToConsoleDebug("SCK = HIGH");
@@ -50,12 +50,12 @@ void PowerOnChip() {
     // Apply 10V to the VPP (Write Enable) Pin.
     OutputToConsoleDebug("VPP (ENABLE) = HIGH");
     digitalWrite(PROG_PIN_EN, HIGH);
-    delay(2);
+    Delay(PROG_DELAY_POWERON);
 
     // Connect RESET to VDD to clear the reset.
     OutputToConsoleDebug("RESET = HIGH");
     digitalWrite(PROG_PIN_RESET, HIGH);
-    delay(2);
+    Delay(PROG_DELAY_POWERON);
 
 }
 
@@ -67,10 +67,10 @@ void SelectCommunicationMethod(PROG_MODE ProgrammingMode) {
     {
         OutputToConsoleDebug("VPP (ENABLE) = LOW");
         digitalWrite(PROG_PIN_EN, LOW);
-        delayMicroseconds(30);
+        Delay(PROG_DELAY_PROGMODE, true);
         OutputToConsoleDebug("VPP (ENABLE) = HIGH");
         digitalWrite(PROG_PIN_EN, HIGH);
-        delayMicroseconds(30);
+        Delay(PROG_DELAY_PROGMODE, true);
     }    
 }
 
@@ -78,17 +78,22 @@ bool SynchronisationDetectionProcessing() {
     
     // Wait for the chip to Initialise.
     OutputToConsole("Waiting for Chip Initialisation");
-    delay(100);
+    Delay(PROG_DELAY_CHIPINIT);
 
     // Send the Reset Command.
     for (int i = 0; i < 16; i++)
     {
         OutputToConsoleDebug("Sending Reset Command, Attempt: " + String(int(i + 1)));
         SendCommand(PROG_CMD_RESET);
+        Delay(PROG_DELAY_COMACK);
+
         if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
+            Delay(PROG_DELAY_ACKCOM);
             OutputToConsole("Received Acknowledgement Response from Microcontroller.");
             return true;
         }
+
+        Delay(PROG_DELAY_ACKCOM);
     }
     
     // An issue has occurred
@@ -104,9 +109,13 @@ void OscillationFrequencySetting() {
     // Send the Oscillation Frequency command.
     OutputToConsoleDebug("Sending Oscillation Frequency Setting Command.");
     SendCommand(PROG_CMD_OSC_FREQ);
+    Delay(PROG_DELAY_COMACK);
+    
     if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
-        
+        Delay(PROG_DELAY_ACKCOM);
     }
+    
+    Delay(PROG_DELAY_ACKCOM);
 
 }
 
@@ -117,6 +126,9 @@ void PowerDownChip() {
     // Connect the RESET pin to ground.
     OutputToConsoleDebug("RESET = LOW");
     digitalWrite(PROG_PIN_RESET, LOW);
+
+    OutputToConsoleDebug("SCK = LOW");
+    digitalWrite(PROG_PIN_SCK, LOW);
 
     // Disconnect power from the VPP Pin.
     OutputToConsoleDebug("VPP (ENABLE) = LOW");
@@ -129,6 +141,17 @@ void PowerDownChip() {
 }
 
 
+void Delay(PROG_DELAY Delay, bool Microseconds) {
+
+    if (!Microseconds) {
+        delay(Delay);
+    }
+    else
+    {
+        delayMicroseconds(Delay);
+    }
+
+}
 
 void ClockPulse() {
 
@@ -153,9 +176,6 @@ void SendCommand(PROG_CMD Command) {
 
     // Set the TX Pin back to 0.
     digitalWrite(PROG_PIN_TX, LOW);
-
-    // Delay to allow the Microcontroller to respond.
-    delay(PROG_DELAY_COMACK);
 }
 
 bool ReceiveCommand(PROG_CMD_RETURN ReturnCode) {
@@ -177,9 +197,6 @@ bool ReceiveCommand(PROG_CMD_RETURN ReturnCode) {
     }
 
     OutputToConsoleDebug("Read (Byte): " + String(Command));
-
-    // Implement the delay to prevent commands from being sent straight away.
-    delay(PROG_DELAY_ACKCOM);
 
     // Check if the response from the Microcontroller is the expected one.
     return Command == ReturnCode;

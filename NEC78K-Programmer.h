@@ -4,14 +4,6 @@
 
 #include <Arduino.h>
 
-// Timings
-# pragma region PROG_DELAYS
-#define     PROG_DELAY_SCKFREQ      10          // Frequency of the Software (Programmers) Clock.
-#define     PROG_DELAY_COMACK       900         // Delay between sending a command and attempting to read the response from the Microcontroller.
-#define     PROG_DELAY_ACKCOM       170         // Delay between receiving a response from the Microcontroller and attempting to send another command.
-
-# pragma endregion PROG_DELAYS
-
 // Programmer Pins
 # pragma region PROG_PINS
 extern int     PROG_SCK;       // Connects to: TX
@@ -21,6 +13,16 @@ extern int     PROG_RESET;     // Connects to: RESET
 extern int     PROG_EN;        // Connects to: VPP
 extern int     PROG_VDD;       // Connects to: VDD
 # pragma endregion PROG_PINS
+
+// Timings
+enum PROG_DELAY {
+    PROG_DELAY_PROGMODE     =       30,         // Delay between pulsing the VPP line to select the programming mode. Measure in Microseconds.
+    PROG_DELAY_POWERON      =       2,          // Delay between powering on Microcontroller pins to put the chip into Programming Mode.
+    PROG_DELAY_CHIPINIT     =       100,        // Delay between selecting the communications mode, and performing Synchronisation Detection Processing.
+    PROG_DELAY_SCKFREQ      =       10,         // Frequency of the Software (Programmers) Clock.
+    PROG_DELAY_COMACK       =       900,        // Delay between sending a command and attempting to read the response from the Microcontroller.
+    PROG_DELAY_ACKCOM       =       170         // Delay between receiving a response from the Microcontroller and attempting to send another command.
+};
 
 // Programmer Communication Modes
 enum PROG_MODE {
@@ -73,6 +75,7 @@ void OscillationFrequencySetting();
 void PowerDownChip();
 
 // Utility Subroutines
+void Delay(PROG_DELAY Delay, bool Microseconds = false);
 void ClockPulse();
 void SendCommand(PROG_CMD Command);
 bool ReceiveCommand(PROG_CMD_RETURN ReturnCode);
