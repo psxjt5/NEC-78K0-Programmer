@@ -41,7 +41,7 @@ void loop() {
                 PowerDownChip();
                 return;
             }
-
+          
             // Set the Oscillation Frequency.
             if (!OscillationFrequencySetting(10, 0, 0, 4)) {
                 PowerDownChip();
