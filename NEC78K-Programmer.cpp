@@ -196,7 +196,64 @@ bool FlashEraseTimeSetting(int High, int Mid, int Low, int Exp) {
 }
 
 bool GetSiliconeSignatureData() {
-    
+
+    OutputToConsole("Requesting Silicone Signature.");
+
+    // Send the Silicone Signature command.
+    OutputToConsoleDebug("Sending Silicone Signature Command.");
+    SendCommand(PROG_CMD_SIL_SIG);
+    Delay(PROG_DELAY_COMACK);
+
+    // Check if the command was acknowledged
+    if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
+        OutputToConsoleDebug("Received Silicone Signature Acknowledgement.");
+
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_VENDOR = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_ID = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_ELEC_INFO = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_LAST_ADDR[0] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_LAST_ADDR[1] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_LAST_ADDR[2] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[0] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[1] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[2] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[3] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[4] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[5] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[6] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[7] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[8] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[9] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_BLOCK_INFO = ReceiveData();
+        Delay(PROG_DELAY_DATACK);
+
+        if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
+            Delay(PROG_DELAY_ACKCOM);
+            OutputToConsoleDebug("Received Silicone Signature Successfully.");
+            return true;
+        }
+    }
+
+    Delay(PROG_DELAY_ACKCOM);
+    OutputToConsole("Silicone Signature Request Failed.");
+    return false;
+
 }
 
 void PowerDownChip() {
@@ -296,4 +353,24 @@ bool ReceiveCommand(PROG_CMD_RETURN ReturnCode) {
     // Check if the response from the Microcontroller is the expected one.
     return Command == ReturnCode;
 
+}
+
+byte ReceiveData() {
+    // Receive each bit of the byte after each clock pulse.
+
+    byte Command = 0;
+
+    for (int i = 0; i < 8; i++)
+    {
+        ClockPulse();
+        int CurrentByte = digitalRead(PROG_PIN_RX);
+
+        OutputToConsoleDebug("Read (Bit): " + String(CurrentByte));
+
+        if (CurrentByte == 1) {
+            bitSet(Command, i);
+        }
+    }
+
+    return Command;
 }
