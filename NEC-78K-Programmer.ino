@@ -39,6 +39,9 @@ void loop() {
             // Synchronisation Detection Processing
             if (SynchronisationDetectionProcessing()) {
 
+                // Set the Oscillation Frequency.
+                OscillationFrequencySetting(10, 0, 0, 4);
+
             }
 
             // Power Down the Chip Safely.

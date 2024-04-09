@@ -21,7 +21,11 @@ enum PROG_DELAY {
     PROG_DELAY_CHIPINIT     =       100,        // Delay between selecting the communications mode, and performing Synchronisation Detection Processing.
     PROG_DELAY_SCKFREQ      =       10,         // Frequency of the Software (Programmers) Clock.
     PROG_DELAY_COMACK       =       900,        // Delay between sending a command and attempting to read the response from the Microcontroller.
-    PROG_DELAY_ACKCOM       =       170         // Delay between receiving a response from the Microcontroller and attempting to send another command.
+    PROG_DELAY_ACKCOM       =       170,        // Delay between receiving a response from the Microcontroller and attempting to send another command.
+    PROG_DELAY_ACKDAT       =       230,        // Delay between receiving a response from the Microcontroller and attempting to send data.
+    PROG_DELAY_DATDAT       =       300,        // Delay between sending data, and then sending more data.
+    PROG_DELAY_DATACK       =       350,        // Delay between sending data, and then attempting to read the response from the Microcontroller.
+    PROG_DELAY_FRQCAL       =       2200,       // Delay between setting the Clock Frequency and any further communications.
 };
 
 // Programmer Communication Modes
@@ -71,11 +75,12 @@ void InitialiseProgrammer(int PIN_SCK, int PIN_RX, int PIN_TX, int PIN_RESET, in
 void PowerOnChip();
 void SelectCommunicationMethod(PROG_MODE ProgrammingMode);
 bool SynchronisationDetectionProcessing();
-void OscillationFrequencySetting();
+bool OscillationFrequencySetting(int High, int Mid, int Low, int Exp);
 void PowerDownChip();
 
 // Utility Subroutines
 void Delay(PROG_DELAY Delay, bool Microseconds = false);
 void ClockPulse();
 void SendCommand(PROG_CMD Command);
+void SendData(byte Data);
 bool ReceiveCommand(PROG_CMD_RETURN ReturnCode);

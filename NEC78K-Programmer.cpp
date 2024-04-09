@@ -94,6 +94,7 @@ bool SynchronisationDetectionProcessing() {
         }
 
         Delay(PROG_DELAY_ACKCOM);
+        return false;
     }
     
     // An issue has occurred
@@ -102,7 +103,7 @@ bool SynchronisationDetectionProcessing() {
 
 }
 
-void OscillationFrequencySetting() {
+bool OscillationFrequencySetting(int High, int Mid, int Low, int Exp) {
     
     OutputToConsole("Setting Oscillation Frequency.");
 
@@ -111,11 +112,40 @@ void OscillationFrequencySetting() {
     SendCommand(PROG_CMD_OSC_FREQ);
     Delay(PROG_DELAY_COMACK);
     
+    // Check if the command was acknowledged.
     if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
-        Delay(PROG_DELAY_ACKCOM);
+        OutputToConsoleDebug("Received Oscillation Frequency Setting Acknowledgement.");
+
+        Delay(PROG_DELAY_ACKDAT);
+
+        OutputToConsoleDebug("Sending High Byte: " + String(High));
+        SendData(High);
+        Delay(PROG_DELAY_DATDAT);
+        
+        OutputToConsoleDebug("Sending Mid Byte: " + String(Mid));
+        SendData(Mid);
+        Delay(PROG_DELAY_DATDAT);
+        
+        OutputToConsoleDebug("Sending Low Byte: " + String(Low));
+        SendData(Low);
+        Delay(PROG_DELAY_DATDAT);
+        
+        OutputToConsoleDebug("Sending Exponent Byte: " + String(Exp));
+        SendData(Exp);
+        Delay(PROG_DELAY_FRQCAL);
+
+        OutputToConsoleDebug("Sending Oscillation Frequency Set Command.");
+        if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
+            OutputToConsoleDebug("Received Oscillation Frequency Setting Acknowledgement.");
+            Delay(PROG_DELAY_ACKCOM);
+            OutputToConsole("Oscillation Frequency Set.");
+            return true;
+        }
     }
     
     Delay(PROG_DELAY_ACKCOM);
+    OutputToConsole("Oscillation Frequency Setting Failed.");
+    return false;
 
 }
 
@@ -168,14 +198,35 @@ void SendCommand(PROG_CMD Command) {
 
     // Send each bit of the byte, whilst ticking the clock.
 
+    byte currentCommand = Command;
+
     for (int i = 7; i >= 0; i--)
     {
-        digitalWrite(PROG_PIN_TX, ((Command >> i) & 0x01));
+        currentCommand = currentCommand >> i;
+        digitalWrite(PROG_PIN_TX, (currentCommand & 0x01));
         ClockPulse();
     }
 
     // Set the TX Pin back to 0.
     digitalWrite(PROG_PIN_TX, LOW);
+}
+
+void SendData(byte Data) {
+    
+    // Send each bit of the byte, whilst ticking the clock.
+
+    byte currentData = Data;
+
+    for (int i = 7; i >= 0; i--)
+    {
+        currentData = currentData >> i;
+        digitalWrite(PROG_PIN_TX, (currentData & 0x01));
+        ClockPulse();
+    }
+
+    // Set the TX Pin back to 0.
+    digitalWrite(PROG_PIN_TX, LOW);
+
 }
 
 bool ReceiveCommand(PROG_CMD_RETURN ReturnCode) {
