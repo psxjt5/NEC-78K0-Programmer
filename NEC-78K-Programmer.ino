@@ -49,10 +49,12 @@ void loop() {
             }
 
             // Set the Flash Erase Time Frequency.
-            if (!FlashEraseTimeSetting(2, 0, 0, 1)) {
-                PowerDownChip();
-                return;
-            }
+            // if (!FlashEraseTimeSetting(2, 0, 0, 1)) {
+            //     PowerDownChip();
+            //     return;
+            // }
+
+            
 
             // Power Down the Chip Safely.
             PowerDownChip();
