@@ -70,8 +70,13 @@ enum PROG_CMD_RETURN {
     PROG_CMD_RETURN_NACK    = 0xFF      // Non-Acknowledgement.
 };
 
+// Microcontroller Vendor IDs
+enum PROG_VENDOR {
+    PROG_VENDOR_NEC         = 0x10      // NEC
+};
+
 // Microcontroller Silicon Information
-struct PROG_SIL_SIG {
+struct {
     byte        PROG_SIL_SIG_VENDOR;        // Vendor Code
     byte        PROG_SIL_SIG_ID;            // ID Code
     byte        PROG_SIL_SIG_ELEC_INFO;     // Electrical Information
@@ -97,3 +102,5 @@ void SendCommand(PROG_CMD Command);
 void SendData(byte Data);
 bool ReceiveCommand(PROG_CMD_RETURN ReturnCode);
 byte ReceiveData();
+
+void PrintSiliconeSignature();

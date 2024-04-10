@@ -374,3 +374,28 @@ byte ReceiveData() {
 
     return Command;
 }
+
+
+void PrintSiliconeSignature() {
+    
+    // Title
+    OutputToConsole("Silicone Signature: ");
+
+    // Vendor Code
+    if (PROG_SIL_SIG_TABLE.PROG_SIL_SIG_VENDOR == PROG_VENDOR_NEC) {
+        OutputToConsole("Vendor Code: " + String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_VENDOR, HEX) + " (NEC)");
+    }
+    else
+    {
+        OutputToConsole("Vendor Code: " + String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_VENDOR, HEX));
+    }
+
+    // ID Code
+    OutputToConsole("Vendor Code: " + String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_ID, HEX));
+
+    // Electrical Information
+    OutputToConsole("Electrical Information: " + String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_ELEC_INFO, HEX));
+
+    // ID Code
+    OutputToConsole("Vendor Code: " + String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_ID, HEX));
+}
