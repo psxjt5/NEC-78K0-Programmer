@@ -70,21 +70,6 @@ enum PROG_CMD_RETURN {
     PROG_CMD_RETURN_NACK    = 0xFF      // Non-Acknowledgement.
 };
 
-// Microcontroller Vendor IDs
-enum PROG_VENDOR {
-    PROG_VENDOR_NEC         = 0x10      // NEC
-};
-
-// Microcontroller Silicon Information
-struct {
-    byte        PROG_SIL_SIG_VENDOR;        // Vendor Code
-    byte        PROG_SIL_SIG_ID;            // ID Code
-    byte        PROG_SIL_SIG_ELEC_INFO;     // Electrical Information
-    byte        PROG_SIL_SIG_LAST_ADDR[3];  // Last Address
-    byte        PROG_SIL_SIG_DEV_NAME[10];  // Device Name
-    byte        PROG_SIL_SIG_BLOCK_INFO;    // Block Information
-} PROG_SIL_SIG_TABLE;
-
 // Programming Routines
 void InitialiseProgrammer(int PIN_SCK, int PIN_RX, int PIN_TX, int PIN_RESET, int PIN_VPP, int PIN_VDD);
 void PowerOnChip();
@@ -92,7 +77,6 @@ void SelectCommunicationMethod(PROG_MODE ProgrammingMode);
 bool SynchronisationDetectionProcessing();
 bool OscillationFrequencySetting(int High, int Mid, int Low, int Exp);
 bool FlashEraseTimeSetting(int High, int Mid, int Low, int Exp);
-bool GetSiliconSignatureData();
 void PowerDownChip();
 
 // Utility Subroutines
@@ -101,6 +85,3 @@ void ClockPulse();
 void SendCommand(PROG_CMD Command);
 void SendData(byte Data);
 bool ReceiveCommand(PROG_CMD_RETURN ReturnCode);
-byte ReceiveData();
-
-void PrintSiliconSignature();
