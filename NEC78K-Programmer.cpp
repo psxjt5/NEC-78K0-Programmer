@@ -178,7 +178,7 @@ bool FlashEraseTimeSetting(int High, int Mid, int Low, int Exp) {
         
         OutputToConsoleDebug("Sending Exponent Byte: " + String(Exp));
         SendData(Exp);
-        Delay(PROG_DELAY_FRQCAL);
+        Delay(PROG_DELAY_ERASETMSET);
 
         OutputToConsoleDebug("Sending Flash Erase Time Set Command.");
         if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {

@@ -26,6 +26,7 @@ enum PROG_DELAY {
     PROG_DELAY_DATDAT       =       300,        // Delay between sending data, and then sending more data.
     PROG_DELAY_DATACK       =       350,        // Delay between sending data, and then attempting to read the response from the Microcontroller.
     PROG_DELAY_FRQCAL       =       2200,       // Delay between setting the Clock Frequency and any further communications.
+    PROG_DELAY_ERASETMSET   =       1200        // Delay between setting the Erasure Time and any further communications.
 };
 
 // Programmer Communication Modes
