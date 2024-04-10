@@ -92,7 +92,7 @@ void SelectCommunicationMethod(PROG_MODE ProgrammingMode);
 bool SynchronisationDetectionProcessing();
 bool OscillationFrequencySetting(int High, int Mid, int Low, int Exp);
 bool FlashEraseTimeSetting(int High, int Mid, int Low, int Exp);
-bool GetSiliconeSignatureData();
+bool GetSiliconSignatureData();
 void PowerDownChip();
 
 // Utility Subroutines
@@ -103,4 +103,4 @@ void SendData(byte Data);
 bool ReceiveCommand(PROG_CMD_RETURN ReturnCode);
 byte ReceiveData();
 
-void PrintSiliconeSignature();
+void PrintSiliconSignature();
