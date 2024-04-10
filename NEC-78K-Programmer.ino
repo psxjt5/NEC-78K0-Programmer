@@ -43,7 +43,7 @@ void loop() {
             }
           
             // Set the Oscillation Frequency.
-            if (!OscillationFrequencySetting(1, 0, 0, 5)) {
+            if (!OscillationFrequencySetting(10, 0, 0, 4)) {
                 PowerDownChip();
                 return;
             }
@@ -54,14 +54,7 @@ void loop() {
             //     return;
             // }
 
-            // Request the Silicon Signature Data
-            if (!GetSiliconSignatureData()) {
-                PowerDownChip();
-                return;
-            }
-
-            // Output the Silicon Signature Data
-            PrintSiliconSignature();
+            
 
             // Power Down the Chip Safely.
             PowerDownChip();
