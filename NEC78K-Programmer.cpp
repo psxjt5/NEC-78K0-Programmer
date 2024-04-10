@@ -195,6 +195,78 @@ bool FlashEraseTimeSetting(int High, int Mid, int Low, int Exp) {
 
 }
 
+bool GetSiliconSignatureData() {
+
+    OutputToConsole("Requesting Silicon Signature.");
+
+    // Send the Silicon Signature command.
+    OutputToConsole("Sending Silicon Signature Command.");
+    SendCommand(PROG_CMD_SIL_SIG);
+    Delay(PROG_DELAY_COMACK);
+
+    // Check if the command was acknowledged
+    if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
+        OutputToConsole("Received Silicon Signature Acknowledgement.");
+        Delay(PROG_DELAY_ACKDAT);
+
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_VENDOR = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+
+        OutputToConsoleDebug("Reading ID Code Data");
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_ID = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+
+        OutputToConsoleDebug("Reading Electrical Information Data");
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_ELEC_INFO = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+
+        OutputToConsoleDebug("Reading Last Address Data");
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_LAST_ADDR[0] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_LAST_ADDR[1] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_LAST_ADDR[2] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+
+        OutputToConsoleDebug("Reading Device Name Data");
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[0] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[1] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[2] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[3] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[4] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[5] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[6] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[7] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[8] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[9] = ReceiveData();
+        Delay(PROG_DELAY_DATDAT);
+    
+        OutputToConsoleDebug("Reading Block Info Data");
+        PROG_SIL_SIG_TABLE.PROG_SIL_SIG_BLOCK_INFO = ReceiveData();
+        Delay(PROG_DELAY_DATACK);
+
+        if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
+            Delay(PROG_DELAY_ACKCOM);
+            OutputToConsoleDebug("Received Silicon Signature Successfully.");
+            return true;
+        }
+    }
+
+    Delay(PROG_DELAY_ACKCOM);
+    OutputToConsole("Silicon Signature Request Failed.");
+    return false;
+
+}
+
 void PowerDownChip() {
 
     OutputToConsole("Powering Down Chip.");
@@ -275,7 +347,7 @@ bool ReceiveCommand(PROG_CMD_RETURN ReturnCode) {
 
     byte Command = 0;
 
-    for (int i = 0; i < 8; i++)
+    for (int i = 7; i >= 0; i--)
     {
         ClockPulse();
         int CurrentByte = digitalRead(PROG_PIN_RX);
@@ -291,5 +363,55 @@ bool ReceiveCommand(PROG_CMD_RETURN ReturnCode) {
 
     // Check if the response from the Microcontroller is the expected one.
     return Command == ReturnCode;
+
+}
+
+byte ReceiveData() {
+    // Receive each bit of the byte after each clock pulse.
+
+    byte Data = 0;
+
+    for (int i = 7; i >= 0; i--)
+    {
+        ClockPulse();
+        int CurrentByte = digitalRead(PROG_PIN_RX);
+
+        OutputToConsoleDebug("Read (Bit): " + String(CurrentByte));
+
+        if (CurrentByte == 1) {
+            bitSet(Data, i);
+        }
+    }
+
+    OutputToConsoleDebug("Read (Byte): " + String(Data));
+
+    return Data;
+}
+
+void PrintSiliconSignature() {
+    
+    // Title
+    OutputToConsole("Silicon Signature: ");
+
+    // Vendor Code
+    if (PROG_SIL_SIG_TABLE.PROG_SIL_SIG_VENDOR == PROG_VENDOR_NEC) {
+        OutputToConsole("Vendor Code: " + String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_VENDOR, HEX) + " (NEC)");
+    }
+    else
+    {
+        OutputToConsole("Vendor Code: " + String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_VENDOR, HEX));
+    }
+
+    // ID Code
+    OutputToConsole("ID Code: " + String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_ID, HEX));
+
+    // Electrical Information
+    OutputToConsole("Electrical Information: " + String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_ELEC_INFO, HEX));
+
+    // ID Code
+    OutputToConsole("Model Code: " + String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_ID));
+
+    // Block Count
+    OutputToConsole("Block Count: " + String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_BLOCK_INFO));
 
 }
