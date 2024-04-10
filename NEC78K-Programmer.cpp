@@ -347,7 +347,7 @@ bool ReceiveCommand(PROG_CMD_RETURN ReturnCode) {
 
     byte Command = 0;
 
-    for (int i = 7; i >= 0; i--)
+    for (int i = 0; i < 8; i++)
     {
         ClockPulse();
         int CurrentByte = digitalRead(PROG_PIN_RX);
@@ -371,7 +371,7 @@ byte ReceiveData() {
 
     byte Data = 0;
 
-    for (int i = 7; i >= 0; i--)
+    for (int i = 0; i < 8; i++)
     {
         ClockPulse();
         int CurrentByte = digitalRead(PROG_PIN_RX);
