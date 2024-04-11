@@ -91,7 +91,7 @@ bool SynchronisationDetectionProcessing() {
 
         if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
             Delay(PROG_DELAY_ACKCOM);
-            OutputToConsole("Received Acknowledgement Response from Microcontroller.");
+            OutputToConsoleDebug("Received Acknowledgement Response from Microcontroller.");
             return true;
         }
 
@@ -140,7 +140,6 @@ bool OscillationFrequencySetting(int High, int Mid, int Low, int Exp) {
         if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
             OutputToConsoleDebug("Received Oscillation Frequency Setting Acknowledgement.");
             Delay(PROG_DELAY_ACKCOM);
-            OutputToConsole("Oscillation Frequency Set.");
             return true;
         }
     }
@@ -186,7 +185,7 @@ bool FlashEraseTimeSetting(int High, int Mid, int Low, int Exp) {
         if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
             OutputToConsoleDebug("Received Flash Erase Time Setting Acknowledgement.");
             Delay(PROG_DELAY_ACKCOM);
-            OutputToConsole("Flash Erase Time Set.");
+            OutputToConsoleDebug("Flash Erase Time Set.");
             return true;
         }
     }
@@ -202,13 +201,13 @@ bool GetSiliconSignatureData() {
     OutputToConsole("Requesting Silicon Signature.");
 
     // Send the Silicon Signature command.
-    OutputToConsole("Sending Silicon Signature Command.");
+    OutputToConsoleDebug("Sending Silicon Signature Command.");
     SendCommand(PROG_CMD_SIL_SIG);
     Delay(PROG_DELAY_COMACK);
 
     // Check if the command was acknowledged
     if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
-        OutputToConsole("Received Silicon Signature Acknowledgement.");
+        OutputToConsoleDebug("Received Silicon Signature Acknowledgement.");
         Delay(PROG_DELAY_ACKDAT);
 
         PROG_SIL_SIG_TABLE.PROG_SIL_SIG_VENDOR = ReceiveData();
@@ -274,13 +273,13 @@ bool GetCurrentStatus() {
     OutputToConsole("Requesting Current Status.");
 
     // Send the Status Check Command
-    OutputToConsole("Sending Status Check Command.");
+    OutputToConsoleDebug("Sending Status Check Command.");
     SendCommand(PROG_CMD_STATUS_CHK);
     Delay(PROG_DELAY_COMACK);
 
     // Check if the command was acknowledged.
     if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
-        OutputToConsole("Received Status Check Acknowledgement");
+        OutputToConsoleDebug("Received Status Check Acknowledgement");
         Delay(PROG_DELAY_ACKDAT);
 
         OutputToConsoleDebug("Reading Status Data");
@@ -289,7 +288,7 @@ bool GetCurrentStatus() {
         Delay(PROG_DELAY_DATACK);
         OutputToConsoleDebug("Reading Status Data Acknowledgement");
         if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
-            OutputToConsole("Received Final Status Check Acknowledgement");
+            OutputToConsoleDebug("Received Final Status Check Acknowledgement");
             Delay(PROG_DELAY_ACKCOM);
 
             return true;
