@@ -1,11 +1,13 @@
 #include "NEC78K-Programmer.h"
 
-int     PROG_PIN_SCK;       // Connects to: TX
-int     PROG_PIN_RX;        // Connects to: SO10
-int     PROG_PIN_TX;        // Connects to: RX
-int     PROG_PIN_RESET;     // Connects to: RESET
-int     PROG_PIN_EN;        // Connects to: VPP
-int     PROG_PIN_VDD;       // Connects to: VDD
+int             PROG_PIN_SCK;           // Connects to: TX
+int             PROG_PIN_RX;            // Connects to: SO10
+int             PROG_PIN_TX;            // Connects to: RX
+int             PROG_PIN_RESET;         // Connects to: RESET
+int             PROG_PIN_EN;            // Connects to: VPP
+int             PROG_PIN_VDD;           // Connects to: VDD
+
+PROG_STATUS     PROG_STATUS_CURRENT     = PROG_STATUS_READY;    // Current Status
 
 void InitialiseProgrammer(int PIN_SCK, int PIN_RX, int PIN_TX, int PIN_RESET, int PIN_VPP, int PIN_VDD) {
     
@@ -267,6 +269,44 @@ bool GetSiliconSignatureData() {
 
 }
 
+bool GetCurrentStatus() {
+
+    OutputToConsole("Requesting Current Status.");
+
+    // Send the Status Check Command
+    OutputToConsole("Sending Status Check Command.");
+    SendCommand(PROG_CMD_STATUS_CHK);
+    Delay(PROG_DELAY_COMACK);
+
+    // Check if the command was acknowledged.
+    if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
+        OutputToConsole("Received Status Check Acknowledgement");
+        Delay(PROG_DELAY_ACKDAT);
+
+        OutputToConsoleDebug("Reading Status Data");
+        PROG_STATUS_CURRENT = static_cast<PROG_STATUS>(ReceiveData());
+
+        Delay(PROG_DELAY_DATACK);
+        OutputToConsoleDebug("Reading Status Data Acknowledgement");
+        if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
+            OutputToConsole("Received Final Status Check Acknowledgement");
+            Delay(PROG_DELAY_ACKCOM);
+
+            return true;
+        }
+
+        Delay(PROG_DELAY_ACKCOM);
+        OutputToConsole("Status Check Request Failed.");
+        return false;
+
+    }
+
+    Delay(PROG_DELAY_ACKCOM);
+    OutputToConsole("Status Check Request Failed.");
+    return false;
+
+}
+
 void PowerDownChip() {
 
     OutputToConsole("Powering Down Chip.");
@@ -388,6 +428,8 @@ byte ReceiveData() {
     return Data;
 }
 
+
+
 void PrintSiliconSignature() {
     
     // Title
@@ -414,4 +456,36 @@ void PrintSiliconSignature() {
     // Block Count
     OutputToConsole("Block Count: " + String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_BLOCK_INFO));
 
+}
+
+void PrintCurrentStatus() {
+    switch(PROG_STATUS_CURRENT) {
+        case PROG_STATUS_ERASING:
+            OutputToConsole("Current Status: Erasing");
+            break;
+        case PROG_STATUS_WRITING:
+            OutputToConsole("Current Status: Writing");
+            break;
+        case PROG_STATUS_VERIFYING:
+            OutputToConsole("Current Status: Verifying");
+            break;
+        case PROG_STATUS_BLANKCHK:
+            OutputToConsole("Current Status: Blank Checking");
+            break;
+        case PROG_STATUS_ERASING_FAILED:
+            OutputToConsole("Current Status: Erasing Failed");
+            break;
+        case PROG_STATUS_WRITING_FAILED:
+            OutputToConsole("Current Status: Writing Failed");
+            break;
+        case PROG_STATUS_VERIFYING_FAILED:
+            OutputToConsole("Current Status: Verifying Failed");
+            break;
+        case PROG_STATUS_BLANKCHK_FAILED:
+            OutputToConsole("Current Status: Blank Checking Failed");
+            break;
+        case PROG_STATUS_READY:
+            OutputToConsole("Current Status: Ready");
+            break;
+    }
 }
