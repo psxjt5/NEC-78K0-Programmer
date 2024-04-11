@@ -210,6 +210,7 @@ bool GetSiliconSignatureData() {
         OutputToConsoleDebug("Received Silicon Signature Acknowledgement.");
         Delay(PROG_DELAY_ACKDAT);
 
+        OutputToConsoleDebug("Reading Vendor Code");
         PROG_SIL_SIG_TABLE.PROG_SIL_SIG_VENDOR = ReceiveData();
         Delay(PROG_DELAY_DATDAT);
 
@@ -432,28 +433,57 @@ byte ReceiveData() {
 void PrintSiliconSignature() {
     
     // Title
-    OutputToConsole("Silicon Signature: ");
+    OutputToConsole("");
+    OutputToConsole("Silicon Signature: -------------------------- ");
 
     // Vendor Code
     if (PROG_SIL_SIG_TABLE.PROG_SIL_SIG_VENDOR == PROG_VENDOR_NEC) {
-        OutputToConsole("Vendor Code: " + String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_VENDOR, HEX) + " (NEC)");
+        OutputToConsole("Vendor Code: " + Upper(String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_VENDOR, HEX)) + " (NEC)");
     }
     else
     {
-        OutputToConsole("Vendor Code: " + String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_VENDOR, HEX));
+        OutputToConsole("Vendor Code: " + Upper(String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_VENDOR, HEX)));
     }
 
     // ID Code
-    OutputToConsole("ID Code: " + String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_ID, HEX));
+    OutputToConsole("ID Code: " + Upper(String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_ID, HEX)));
 
     // Electrical Information
-    OutputToConsole("Electrical Information: " + String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_ELEC_INFO, HEX));
+    OutputToConsole("Electrical Information: " + Upper(String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_ELEC_INFO, HEX)));
 
-    // ID Code
-    OutputToConsole("Model Code: " + String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_ID));
+    // Flash Size & Last Address
+    byte sizeLow = PROG_SIL_SIG_TABLE.PROG_SIL_SIG_LAST_ADDR[0];
+    bitClear(sizeLow, 7);
+    //OutputToConsoleDebug("Low: " + String(sizeLow, HEX));
+    byte sizeMid = PROG_SIL_SIG_TABLE.PROG_SIL_SIG_LAST_ADDR[1];
+    bitClear(sizeMid, 7);
+    //OutputToConsoleDebug("Mid: " + String(sizeMid, HEX));
+    byte sizeHigh = PROG_SIL_SIG_TABLE.PROG_SIL_SIG_LAST_ADDR[2];
+    bitClear(sizeHigh, 7);
+    //OutputToConsoleDebug("High: " + String(sizeHigh, HEX));
+    unsigned long int flashSize = (sizeHigh << 16) | (sizeMid << 8) | sizeLow;
+
+    OutputToConsole("Last Memory Address: " + Upper(String(flashSize, HEX)));
+    OutputToConsole("Flash Memory Size: " + String(flashSize / 1000) + "KB");
+
+    // Model Code
+    String modelCode = "";
+
+    for (int i = 0; i < 10; i++)
+    {
+        byte currentByte = PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[i];
+        bitClear(currentByte, 7);
+        modelCode += (char) currentByte;
+    }
+
+    OutputToConsole("Model Code: " + Upper(modelCode));
 
     // Block Count
-    OutputToConsole("Block Count: " + String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_BLOCK_INFO));
+    OutputToConsole("Block Count: " + Upper(String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_BLOCK_INFO)));
+
+    // Bottom of the Banner
+    OutputToConsole("---------------------------------------------");
+    OutputToConsole("");
 
 }
 
@@ -487,4 +517,9 @@ void PrintCurrentStatus() {
             OutputToConsole("Current Status: Ready");
             break;
     }
+}
+
+String Upper(String Input) {
+    Input.toUpperCase();
+    return Input;
 }

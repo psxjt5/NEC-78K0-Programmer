@@ -48,29 +48,29 @@ void loop() {
                 return;
             }
 
+            // Request the Silicon Signature Data
+            if (!GetSiliconSignatureData()) {
+                //PowerDownChip();
+                //return;
+            }
+
+            // Output the Silicon Signature Data
+            PrintSiliconSignature();
+
             // Set the Flash Erase Time Frequency.
             // if (!FlashEraseTimeSetting(2, 0, 0, 1)) {
             //     PowerDownChip();
             //     return;
             // }
 
-            // Request Status
-            if (!GetCurrentStatus()) {
-                PowerDownChip();
-                return;
-            }
-
-            // Output the Current Status
-            PrintCurrentStatus();
-
-            // // Request the Silicon Signature Data
-            // if (!GetSiliconSignatureData()) {
+            // // Request Status
+            // if (!GetCurrentStatus()) {
             //     PowerDownChip();
             //     return;
             // }
 
-            // // Output the Silicon Signature Data
-            // PrintSiliconSignature();
+            // // Output the Current Status
+            // PrintCurrentStatus();
 
             // Power Down the Chip Safely.
             PowerDownChip();
