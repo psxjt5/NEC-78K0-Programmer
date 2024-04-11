@@ -99,6 +99,9 @@ struct {
     byte        PROG_SIL_SIG_BLOCK_INFO;    // Block Information
 } PROG_SIL_SIG_TABLE;
 
+// Microcontroller Current Status
+PROG_STATUS PROG_STATUS_CURRENT;
+
 // Programming Routines
 void InitialiseProgrammer(int PIN_SCK, int PIN_RX, int PIN_TX, int PIN_RESET, int PIN_VPP, int PIN_VDD);
 void PowerOnChip();

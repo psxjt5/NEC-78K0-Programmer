@@ -54,6 +54,15 @@ void loop() {
             //     return;
             // }
 
+            // Request Status
+            if (!GetCurrentStatus()) {
+                PowerDownChip();
+                return;
+            }
+
+            // Output the Current Status
+            OutputToConsole(String(PROG_STATUS_CURRENT));
+
             // Request the Silicon Signature Data
             if (!GetSiliconSignatureData()) {
                 PowerDownChip();

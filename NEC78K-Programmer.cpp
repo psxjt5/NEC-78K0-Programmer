@@ -282,7 +282,7 @@ bool GetCurrentStatus() {
         Delay(PROG_DELAY_ACKDAT);
 
         OutputToConsoleDebug("Reading Status Data");
-        byte Status = ReceiveData();
+        PROG_STATUS_CURRENT = static_cast<PROG_STATUS>(ReceiveData());
 
         Delay(PROG_DELAY_DATACK);
         if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
