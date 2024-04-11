@@ -268,7 +268,40 @@ bool GetSiliconSignatureData() {
 }
 
 bool GetCurrentStatus() {
-    
+
+    OutputToConsole("Requesting Current Status.");
+
+    // Send the Status Check Command
+    OutputToConsole("Sending Status Check Command.");
+    SendCommand(PROG_CMD_STATUS_CHK);
+    Delay(PROG_DELAY_COMACK);
+
+    // Check if the command was acknowledged.
+    if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
+        OutputToConsole("Received Status Check Acknowledgement");
+        Delay(PROG_DELAY_ACKDAT);
+
+        OutputToConsoleDebug("Reading Status Data");
+        byte Status = ReceiveData();
+
+        Delay(PROG_DELAY_DATACK);
+        if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
+            OutputToConsole("Received Final Status Check Acknowledgement");
+            Delay(PROG_DELAY_ACKCOM);
+
+            return true;
+        }
+
+        Delay(PROG_DELAY_ACKCOM);
+        OutputToConsole("Status Check Request Failed.");
+        return false;
+
+    }
+
+    Delay(PROG_DELAY_ACKCOM);
+    OutputToConsole("Status Check Request Failed.");
+    return false;
+
 }
 
 void PowerDownChip() {
