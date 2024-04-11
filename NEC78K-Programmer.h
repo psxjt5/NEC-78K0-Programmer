@@ -123,3 +123,4 @@ byte ReceiveData();
 
 void PrintSiliconSignature();
 void PrintCurrentStatus();
+String Upper(String Input);
