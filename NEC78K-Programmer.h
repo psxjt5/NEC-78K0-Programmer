@@ -94,6 +94,7 @@ bool SynchronisationDetectionProcessing();
 bool OscillationFrequencySetting(int High, int Mid, int Low, int Exp);
 bool FlashEraseTimeSetting(int High, int Mid, int Low, int Exp);
 bool GetSiliconSignatureData();
+bool GetCurrentStatus();
 void PowerDownChip();
 
 // Utility Subroutines

@@ -267,6 +267,10 @@ bool GetSiliconSignatureData() {
 
 }
 
+bool GetCurrentStatus() {
+    
+}
+
 void PowerDownChip() {
 
     OutputToConsole("Powering Down Chip.");
