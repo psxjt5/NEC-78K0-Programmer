@@ -78,15 +78,15 @@ enum PROG_VENDOR {
 
 // Microcontroller Status Information
 enum PROG_STATUS {
-    PROG_STATUS_ERASING         = 0x80,     // Microcontroller is currently Erasing.
-    PROG_STATUS_WRITING         = 0x40,     // Microcontroller is currently Writing/Programming.
-    PROG_STATUS_VERIFYING       = 0x20,     // Microcontroller is currently Verifying.
-    PROG_STATUS_BLANKCHK        = 0x10,     // Microcontroller is currently Blank Checking.
-    PROG_STATUS_ERASING_FAILED  = 0x08,     // Microcontroller Erase has failed.
-    PROG_STATUS_WRITING_FAILED  = 0x04,     // Microcontroller Write has failed.
-    PROG_STATUS_VERIFY_FAILED   = 0x02,     // Microcontroller Verify has failed.
-    PROG_STATUS_BLANKCHK_FAILED = 0x01,     // Microcontroller Blank Check has failed.
-    PROG_STATUS_READY           = 0x00      // Microcontroller is Ready.
+    PROG_STATUS_ERASING             = 0x80,     // Microcontroller is currently Erasing.
+    PROG_STATUS_WRITING             = 0x40,     // Microcontroller is currently Writing/Programming.
+    PROG_STATUS_VERIFYING           = 0x20,     // Microcontroller is currently Verifying.
+    PROG_STATUS_BLANKCHK            = 0x10,     // Microcontroller is currently Blank Checking.
+    PROG_STATUS_ERASING_FAILED      = 0x08,     // Microcontroller Erase has failed.
+    PROG_STATUS_WRITING_FAILED      = 0x04,     // Microcontroller Write has failed.
+    PROG_STATUS_VERIFYING_FAILED    = 0x02,     // Microcontroller Verify has failed.
+    PROG_STATUS_BLANKCHK_FAILED     = 0x01,     // Microcontroller Blank Check has failed.
+    PROG_STATUS_READY               = 0x00      // Microcontroller is Ready.
 };
 
 // Microcontroller Silicon Information
@@ -100,7 +100,7 @@ struct {
 } PROG_SIL_SIG_TABLE;
 
 // Microcontroller Current Status
-PROG_STATUS PROG_STATUS_CURRENT;
+extern PROG_STATUS PROG_STATUS_CURRENT;
 
 // Programming Routines
 void InitialiseProgrammer(int PIN_SCK, int PIN_RX, int PIN_TX, int PIN_RESET, int PIN_VPP, int PIN_VDD);
@@ -122,3 +122,4 @@ bool ReceiveCommand(PROG_CMD_RETURN ReturnCode);
 byte ReceiveData();
 
 void PrintSiliconSignature();
+void PrintCurrentStatus();

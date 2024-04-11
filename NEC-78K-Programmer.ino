@@ -61,16 +61,16 @@ void loop() {
             }
 
             // Output the Current Status
-            OutputToConsole(String(PROG_STATUS_CURRENT));
+            PrintCurrentStatus();
 
-            // Request the Silicon Signature Data
-            if (!GetSiliconSignatureData()) {
-                PowerDownChip();
-                return;
-            }
+            // // Request the Silicon Signature Data
+            // if (!GetSiliconSignatureData()) {
+            //     PowerDownChip();
+            //     return;
+            // }
 
-            // Output the Silicon Signature Data
-            PrintSiliconSignature();
+            // // Output the Silicon Signature Data
+            // PrintSiliconSignature();
 
             // Power Down the Chip Safely.
             PowerDownChip();
