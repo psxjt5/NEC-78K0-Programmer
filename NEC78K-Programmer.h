@@ -26,7 +26,8 @@ enum PROG_DELAY {
     PROG_DELAY_DATDAT       =       300,        // Delay between sending data, and then sending more data.
     PROG_DELAY_DATACK       =       350,        // Delay between sending data, and then attempting to read the response from the Microcontroller.
     PROG_DELAY_FRQCAL       =       2200,       // Delay between setting the Clock Frequency and any further communications.
-    PROG_DELAY_ERASETMSET   =       1200        // Delay between setting the Erasure Time and any further communications.
+    PROG_DELAY_ERASETMSET   =       1200,       // Delay between setting the Erasure Time and any further communications.
+    PROG_DELAY_WRITE        =       1010        // Delay for Writing.
 };
 
 // Programmer Communication Modes
@@ -111,6 +112,7 @@ bool OscillationFrequencySetting(int High, int Mid, int Low, int Exp);
 bool FlashEraseTimeSetting(int High, int Mid, int Low, int Exp);
 bool GetSiliconSignatureData();
 bool GetCurrentStatus();
+bool Write(byte Low, byte Mid, byte High, byte Data);
 void PowerDownChip();
 
 // Utility Subroutines

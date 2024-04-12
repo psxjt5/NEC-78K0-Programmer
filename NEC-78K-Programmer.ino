@@ -24,7 +24,7 @@ void setup() {
     // Define Pins.
     InitialiseProgrammer(PIN_SCK, PIN_RX, PIN_TX, PIN_RESET, PIN_EN, PIN_VDD);
 
-    OutputToConsole("Ready to begin...");
+    OutputToConsole(F("Ready to begin..."));
 }
 
 void loop() {
@@ -49,13 +49,19 @@ void loop() {
             }
 
             // Request the Silicon Signature Data
-            if (!GetSiliconSignatureData()) {
-                //PowerDownChip();
-                //return;
-            }
+            // if (!GetSiliconSignatureData()) {
+            //     //PowerDownChip();
+            //     //return;
+            // }
 
             // Output the Silicon Signature Data
-            PrintSiliconSignature();
+            //PrintSiliconSignature();
+
+            // Write to a Memory Location
+            if (!Write(0, 0, 0, 0xFF)) {
+                PowerDownChip();
+                return;
+            }
 
             // Set the Flash Erase Time Frequency.
             // if (!FlashEraseTimeSetting(2, 0, 0, 1)) {
