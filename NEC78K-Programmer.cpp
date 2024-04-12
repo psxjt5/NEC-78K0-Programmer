@@ -11,7 +11,7 @@ PROG_STATUS     PROG_STATUS_CURRENT     = PROG_STATUS_READY;    // Current Statu
 
 void InitialiseProgrammer(int PIN_SCK, int PIN_RX, int PIN_TX, int PIN_RESET, int PIN_VPP, int PIN_VDD) {
     
-    OutputToConsole("Initialising Programmer.");
+    OutputToConsole(F("Initialising Programmer."));
 
     // Assign the Pins.
     PROG_PIN_SCK = PIN_SCK;
@@ -33,7 +33,7 @@ void InitialiseProgrammer(int PIN_SCK, int PIN_RX, int PIN_TX, int PIN_RESET, in
 
 void PowerOnChip() {
     
-    OutputToConsole("Powering On Chip in Programming Mode.");
+    OutputToConsole(F("Powering On Chip in Programming Mode."));
 
     // Connect the RESET pin to ground.
     OutputToConsoleDebug("RESET = LOW");
@@ -67,10 +67,10 @@ void SelectCommunicationMethod(PROG_MODE ProgrammingMode) {
 
     for (int i = 0; i < ProgrammingMode; i++)
     {
-        OutputToConsoleDebug("VPP (ENABLE) = LOW");
+        OutputToConsoleDebug(F("VPP (ENABLE) = LOW"));
         digitalWrite(PROG_PIN_EN, LOW);
         Delay(PROG_DELAY_PROGMODE, true);
-        OutputToConsoleDebug("VPP (ENABLE) = HIGH");
+        OutputToConsoleDebug(F("VPP (ENABLE) = HIGH"));
         digitalWrite(PROG_PIN_EN, HIGH);
         Delay(PROG_DELAY_PROGMODE, true);
     }    
@@ -79,7 +79,7 @@ void SelectCommunicationMethod(PROG_MODE ProgrammingMode) {
 bool SynchronisationDetectionProcessing() {
     
     // Wait for the chip to Initialise.
-    OutputToConsole("Waiting for Chip Initialisation");
+    OutputToConsole(F("Waiting for Chip Initialisation"));
     Delay(PROG_DELAY_CHIPINIT);
 
     // Send the Reset Command.
@@ -91,7 +91,7 @@ bool SynchronisationDetectionProcessing() {
 
         if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
             Delay(PROG_DELAY_ACKCOM);
-            OutputToConsoleDebug("Received Acknowledgement Response from Microcontroller.");
+            OutputToConsoleDebug(F("Received Acknowledgement Response from Microcontroller."));
             return true;
         }
 
@@ -100,23 +100,23 @@ bool SynchronisationDetectionProcessing() {
     }
     
     // An issue has occurred
-    OutputToConsole("Acknowledgement not received from Microcontroller.");
+    OutputToConsole(F("Acknowledgement not received from Microcontroller."));
     return false;
 
 }
 
 bool OscillationFrequencySetting(int High, int Mid, int Low, int Exp) {
     
-    OutputToConsole("Setting Oscillation Frequency.");
+    OutputToConsole(F("Setting Oscillation Frequency."));
 
     // Send the Oscillation Frequency command.
-    OutputToConsoleDebug("Sending Oscillation Frequency Setting Command.");
+    OutputToConsoleDebug(F("Sending Oscillation Frequency Setting Command."));
     SendCommand(PROG_CMD_OSC_FREQ);
     Delay(PROG_DELAY_COMACK);
     
     // Check if the command was acknowledged.
     if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
-        OutputToConsoleDebug("Received Oscillation Frequency Setting Acknowledgement.");
+        OutputToConsoleDebug(F("Received Oscillation Frequency Setting Acknowledgement."));
 
         Delay(PROG_DELAY_ACKDAT);
 
@@ -136,32 +136,32 @@ bool OscillationFrequencySetting(int High, int Mid, int Low, int Exp) {
         SendData(Exp);
         Delay(PROG_DELAY_FRQCAL);
 
-        OutputToConsoleDebug("Sending Oscillation Frequency Set Command.");
+        OutputToConsoleDebug(F("Sending Oscillation Frequency Set Command."));
         if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
-            OutputToConsoleDebug("Received Oscillation Frequency Setting Acknowledgement.");
+            OutputToConsoleDebug(F("Received Oscillation Frequency Setting Acknowledgement."));
             Delay(PROG_DELAY_ACKCOM);
             return true;
         }
     }
     
     Delay(PROG_DELAY_ACKCOM);
-    OutputToConsole("Oscillation Frequency Setting Failed.");
+    OutputToConsole(F("Oscillation Frequency Setting Failed."));
     return false;
 
 }
 
 bool FlashEraseTimeSetting(int High, int Mid, int Low, int Exp) {
 
-    OutputToConsole("Setting Flash Erase Time.");
+    OutputToConsole(F("Setting Flash Erase Time."));
 
     // Send the Oscillation Frequency command.
-    OutputToConsoleDebug("Sending Flash Erase Time Command.");
+    OutputToConsoleDebug(F("Sending Flash Erase Time Command."));
     SendCommand(PROG_CMD_ERASE_TIME);
     Delay(PROG_DELAY_COMACK);
     
     // Check if the command was acknowledged.
     if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
-        OutputToConsoleDebug("Received Flash Erase Time Acknowledgement.");
+        OutputToConsoleDebug(F("Received Flash Erase Time Acknowledgement."));
 
         Delay(PROG_DELAY_ACKDAT);
 
@@ -181,48 +181,48 @@ bool FlashEraseTimeSetting(int High, int Mid, int Low, int Exp) {
         SendData(Exp);
         Delay(PROG_DELAY_ERASETMSET);
 
-        OutputToConsoleDebug("Sending Flash Erase Time Set Command.");
+        OutputToConsoleDebug(F("Sending Flash Erase Time Set Command."));
         if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
-            OutputToConsoleDebug("Received Flash Erase Time Setting Acknowledgement.");
+            OutputToConsoleDebug(F("Received Flash Erase Time Setting Acknowledgement."));
             Delay(PROG_DELAY_ACKCOM);
-            OutputToConsoleDebug("Flash Erase Time Set.");
+            OutputToConsoleDebug(F("Flash Erase Time Set."));
             return true;
         }
     }
     
     Delay(PROG_DELAY_ACKCOM);
-    OutputToConsole("Flash Erase Time Setting Failed.");
+    OutputToConsole(F("Flash Erase Time Setting Failed."));
     return false;
 
 }
 
 bool GetSiliconSignatureData() {
 
-    OutputToConsole("Requesting Silicon Signature.");
+    OutputToConsole(F("Requesting Silicon Signature."));
 
     // Send the Silicon Signature command.
-    OutputToConsoleDebug("Sending Silicon Signature Command.");
+    OutputToConsoleDebug(F("Sending Silicon Signature Command."));
     SendCommand(PROG_CMD_SIL_SIG);
     Delay(PROG_DELAY_COMACK);
 
     // Check if the command was acknowledged
     if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
-        OutputToConsoleDebug("Received Silicon Signature Acknowledgement.");
+        OutputToConsoleDebug(F("Received Silicon Signature Acknowledgement."));
         Delay(PROG_DELAY_ACKDAT);
 
-        OutputToConsoleDebug("Reading Vendor Code");
+        OutputToConsoleDebug(F("Reading Vendor Code"));
         PROG_SIL_SIG_TABLE.PROG_SIL_SIG_VENDOR = ReceiveData();
         Delay(PROG_DELAY_DATDAT);
 
-        OutputToConsoleDebug("Reading ID Code Data");
+        OutputToConsoleDebug(F("Reading ID Code Data"));
         PROG_SIL_SIG_TABLE.PROG_SIL_SIG_ID = ReceiveData();
         Delay(PROG_DELAY_DATDAT);
 
-        OutputToConsoleDebug("Reading Electrical Information Data");
+        OutputToConsoleDebug(F("Reading Electrical Information Data"));
         PROG_SIL_SIG_TABLE.PROG_SIL_SIG_ELEC_INFO = ReceiveData();
         Delay(PROG_DELAY_DATDAT);
 
-        OutputToConsoleDebug("Reading Last Address Data");
+        OutputToConsoleDebug(F("Reading Last Address Data"));
         PROG_SIL_SIG_TABLE.PROG_SIL_SIG_LAST_ADDR[0] = ReceiveData();
         Delay(PROG_DELAY_DATDAT);
         PROG_SIL_SIG_TABLE.PROG_SIL_SIG_LAST_ADDR[1] = ReceiveData();
@@ -230,7 +230,7 @@ bool GetSiliconSignatureData() {
         PROG_SIL_SIG_TABLE.PROG_SIL_SIG_LAST_ADDR[2] = ReceiveData();
         Delay(PROG_DELAY_DATDAT);
 
-        OutputToConsoleDebug("Reading Device Name Data");
+        OutputToConsoleDebug(F("Reading Device Name Data"));
         PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[0] = ReceiveData();
         Delay(PROG_DELAY_DATDAT);
         PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[1] = ReceiveData();
@@ -252,72 +252,72 @@ bool GetSiliconSignatureData() {
         PROG_SIL_SIG_TABLE.PROG_SIL_SIG_DEV_NAME[9] = ReceiveData();
         Delay(PROG_DELAY_DATDAT);
     
-        OutputToConsoleDebug("Reading Block Info Data");
+        OutputToConsoleDebug(F("Reading Block Info Data"));
         PROG_SIL_SIG_TABLE.PROG_SIL_SIG_BLOCK_INFO = ReceiveData();
         Delay(PROG_DELAY_DATACK);
 
         if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
             Delay(PROG_DELAY_ACKCOM);
-            OutputToConsoleDebug("Received Silicon Signature Successfully.");
+            OutputToConsoleDebug(F("Received Silicon Signature Successfully."));
             return true;
         }
     }
 
     Delay(PROG_DELAY_ACKCOM);
-    OutputToConsole("Silicon Signature Request Failed.");
+    OutputToConsole(F("Silicon Signature Request Failed."));
     return false;
 
 }
 
 bool GetCurrentStatus() {
 
-    OutputToConsole("Requesting Current Status.");
+    OutputToConsole(F("Requesting Current Status."));
 
     // Send the Status Check Command
-    OutputToConsoleDebug("Sending Status Check Command.");
+    OutputToConsoleDebug(F("Sending Status Check Command."));
     SendCommand(PROG_CMD_STATUS_CHK);
     Delay(PROG_DELAY_COMACK);
 
     // Check if the command was acknowledged.
     if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
-        OutputToConsoleDebug("Received Status Check Acknowledgement");
+        OutputToConsoleDebug(F("Received Status Check Acknowledgement"));
         Delay(PROG_DELAY_ACKDAT);
 
-        OutputToConsoleDebug("Reading Status Data");
+        OutputToConsoleDebug(F("Reading Status Data"));
         PROG_STATUS_CURRENT = static_cast<PROG_STATUS>(ReceiveData());
 
         Delay(PROG_DELAY_DATACK);
-        OutputToConsoleDebug("Reading Status Data Acknowledgement");
+        OutputToConsoleDebug(F("Reading Status Data Acknowledgement"));
         if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
-            OutputToConsoleDebug("Received Final Status Check Acknowledgement");
+            OutputToConsoleDebug(F("Received Final Status Check Acknowledgement"));
             Delay(PROG_DELAY_ACKCOM);
 
             return true;
         }
 
         Delay(PROG_DELAY_ACKCOM);
-        OutputToConsole("Status Check Request Failed.");
+        OutputToConsole(F("Status Check Request Failed."));
         return false;
 
     }
 
     Delay(PROG_DELAY_ACKCOM);
-    OutputToConsole("Status Check Request Failed.");
+    OutputToConsole(F("Status Check Request Failed."));
     return false;
 
 }
 
 bool Write(byte Low, byte Mid, byte High, byte Data) {
 
-    OutputToConsole("Writing to Flash");
+    OutputToConsole(F("Writing to Flash"));
 
     // Send the Write Command
-    OutputToConsoleDebug("Sending Write Request Command.");
+    OutputToConsoleDebug(F("Sending Write Request Command."));
     SendCommand(PROG_CMD_HS_WRITE);
     Delay(PROG_DELAY_COMACK);
 
     if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
-        OutputToConsoleDebug("Received Write Request Acknowledgement.");
+        OutputToConsoleDebug(F("Received Write Request Acknowledgement."));
         Delay(PROG_DELAY_ACKDAT);
 
         // Send Location Data
@@ -339,57 +339,60 @@ bool Write(byte Low, byte Mid, byte High, byte Data) {
         // Check for Acknowledgement
         if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
             // Writing has started
-            OutputToConsoleDebug("Microcontroller is Writing");
+            OutputToConsoleDebug(F("Microcontroller is Writing"));
             Delay(PROG_DELAY_WRITE);
 
             // Get the status of the Microcontroller
             for (int i = 0; i < 16; i++)
             {
-                switch (GetCurrentStatus()) {
+                if (GetCurrentStatus()) {
+                    PrintCurrentStatus();
+                    switch (PROG_STATUS_CURRENT) {
                     case PROG_STATUS_READY:
-                        OutputToConsole("Writing Successful");
+                        OutputToConsole(F("Writing Successful"));
                         return true;
                     case PROG_STATUS_WRITING_FAILED:
-                        OutputToConsole("Writing Failed");
+                        OutputToConsole(F("Writing Failed"));
                         return false;
                     case PROG_STATUS_WRITING:
                         Delay(PROG_DELAY_WRITE);
                         break;
+                    }
                 }
             }
 
-            OutputToConsole("Get Status Failed.");
+            OutputToConsole(F("Get Status Failed."));
             return false;
         }
 
         Delay(PROG_DELAY_ACKCOM);
-        OutputToConsole("Write Parameters Invalid.");
+        OutputToConsole(F("Write Parameters Invalid."));
         return false;
     }
 
     Delay(PROG_DELAY_ACKCOM);
-    OutputToConsole("Write Request Failed.");
+    OutputToConsole(F("Write Request Failed."));
     return false;
 
 }
 
 void PowerDownChip() {
 
-    OutputToConsole("Powering Down Chip.");
+    OutputToConsole(F("Powering Down Chip."));
 
     // Connect the RESET pin to ground.
-    OutputToConsoleDebug("RESET = LOW");
+    OutputToConsoleDebug(F("RESET = LOW"));
     digitalWrite(PROG_PIN_RESET, LOW);
 
-    OutputToConsoleDebug("SCK = LOW");
+    OutputToConsoleDebug(F("SCK = LOW"));
     digitalWrite(PROG_PIN_SCK, LOW);
 
     // Disconnect power from the VPP Pin.
-    OutputToConsoleDebug("VPP (ENABLE) = LOW");
+    OutputToConsoleDebug(F("VPP (ENABLE) = LOW"));
     digitalWrite(PROG_PIN_EN, LOW);
 
     // Disconnect power from the VDD Pin.
-    OutputToConsoleDebug("VDD = LOW");
+    OutputToConsoleDebug(F("VDD = LOW"));
     digitalWrite(PROG_PIN_VDD, LOW);
 
 }
@@ -499,8 +502,8 @@ byte ReceiveData() {
 void PrintSiliconSignature() {
     
     // Title
-    OutputToConsole("");
-    OutputToConsole("Silicon Signature: -------------------------- ");
+    OutputToConsole(F(""));
+    OutputToConsole(F("Silicon Signature: -------------------------- "));
 
     // Vendor Code
     if (PROG_SIL_SIG_TABLE.PROG_SIL_SIG_VENDOR == PROG_VENDOR_NEC) {
@@ -548,39 +551,39 @@ void PrintSiliconSignature() {
     OutputToConsole("Block Count: " + Upper(String(PROG_SIL_SIG_TABLE.PROG_SIL_SIG_BLOCK_INFO)));
 
     // Bottom of the Banner
-    OutputToConsole("---------------------------------------------");
-    OutputToConsole("");
+    OutputToConsole(F("---------------------------------------------"));
+    OutputToConsole(F(""));
 
 }
 
 void PrintCurrentStatus() {
     switch(PROG_STATUS_CURRENT) {
         case PROG_STATUS_ERASING:
-            OutputToConsole("Current Status: Erasing");
+            OutputToConsole(F("Current Status: Erasing"));
             break;
         case PROG_STATUS_WRITING:
-            OutputToConsole("Current Status: Writing");
+            OutputToConsole(F("Current Status: Writing"));
             break;
         case PROG_STATUS_VERIFYING:
-            OutputToConsole("Current Status: Verifying");
+            OutputToConsole(F("Current Status: Verifying"));
             break;
         case PROG_STATUS_BLANKCHK:
-            OutputToConsole("Current Status: Blank Checking");
+            OutputToConsole(F("Current Status: Blank Checking"));
             break;
         case PROG_STATUS_ERASING_FAILED:
-            OutputToConsole("Current Status: Erasing Failed");
+            OutputToConsole(F("Current Status: Erasing Failed"));
             break;
         case PROG_STATUS_WRITING_FAILED:
-            OutputToConsole("Current Status: Writing Failed");
+            OutputToConsole(F("Current Status: Writing Failed"));
             break;
         case PROG_STATUS_VERIFYING_FAILED:
-            OutputToConsole("Current Status: Verifying Failed");
+            OutputToConsole(F("Current Status: Verifying Failed"));
             break;
         case PROG_STATUS_BLANKCHK_FAILED:
-            OutputToConsole("Current Status: Blank Checking Failed");
+            OutputToConsole(F("Current Status: Blank Checking Failed"));
             break;
         case PROG_STATUS_READY:
-            OutputToConsole("Current Status: Ready");
+            OutputToConsole(F("Current Status: Ready"));
             break;
     }
 }
