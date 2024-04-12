@@ -307,6 +307,72 @@ bool GetCurrentStatus() {
 
 }
 
+bool Write(byte Low, byte Mid, byte High, byte Data) {
+
+    OutputToConsole("Writing to Flash");
+
+    // Send the Write Command
+    OutputToConsoleDebug("Sending Write Request Command.");
+    SendCommand(PROG_CMD_HS_WRITE);
+    Delay(PROG_DELAY_COMACK);
+
+    if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
+        OutputToConsoleDebug("Received Write Request Acknowledgement.");
+        Delay(PROG_DELAY_ACKDAT);
+
+        // Send Location Data
+        SendData(High);
+        Delay(PROG_DELAY_DATDAT);
+        SendData(Mid);
+        Delay(PROG_DELAY_DATDAT);
+        SendData(Low);
+        Delay(PROG_DELAY_DATDAT);
+
+        // Send Size
+        SendData(0x01);
+        Delay(PROG_DELAY_DATDAT);
+
+        // Send Data
+        SendData(Data);
+        Delay(PROG_DELAY_DATDAT);
+
+        // Check for Acknowledgement
+        if (ReceiveCommand(PROG_CMD_RETURN_ACK)) {
+            // Writing has started
+            OutputToConsoleDebug("Microcontroller is Writing");
+            Delay(PROG_DELAY_WRITE);
+
+            // Get the status of the Microcontroller
+            for (int i = 0; i < 16; i++)
+            {
+                switch (GetCurrentStatus()) {
+                    case PROG_STATUS_READY:
+                        OutputToConsole("Writing Successful");
+                        return true;
+                    case PROG_STATUS_WRITING_FAILED:
+                        OutputToConsole("Writing Failed");
+                        return false;
+                    case PROG_STATUS_WRITING:
+                        Delay(PROG_DELAY_WRITE);
+                        break;
+                }
+            }
+
+            OutputToConsole("Get Status Failed.");
+            return false;
+        }
+
+        Delay(PROG_DELAY_ACKCOM);
+        OutputToConsole("Write Parameters Invalid.");
+        return false;
+    }
+
+    Delay(PROG_DELAY_ACKCOM);
+    OutputToConsole("Write Request Failed.");
+    return false;
+
+}
+
 void PowerDownChip() {
 
     OutputToConsole("Powering Down Chip.");
