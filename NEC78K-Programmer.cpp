@@ -309,7 +309,7 @@ bool GetCurrentStatus() {
 
 bool Write(byte Low, byte Mid, byte High, byte Data) {
 
-    OutputToConsole(F("Writing to Flash"));
+    OutputToConsole("Writing to Flash: High: 0x" + Upper(String(High, HEX)) + " Mid: 0x" + Upper(String(Mid, HEX)) + " Low: 0x" + Upper(String(Low, HEX)) + " Data: 0x" + Upper(String(Data, HEX)) + ".");
 
     // Send the Write Command
     OutputToConsoleDebug(F("Sending Write Request Command."));
