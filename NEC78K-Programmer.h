@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ConsoleLog.h"
+#include "SDStorage.h"
 
 #include <Arduino.h>
 
