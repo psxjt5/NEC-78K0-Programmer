@@ -6,6 +6,7 @@
 
 #include "NEC78K-Programmer.h"
 #include "ConsoleLog.h"
+#include "SDStorage.h"
 
 // Pin Definitons
 #define     PIN_SCK        2       // Connects to: TX
@@ -20,6 +21,12 @@ void setup() {
 
     // Enable Console Output.
     InitialiseConsole(19200, true);
+
+    // Initialise SD
+    InitialiseSD(10);
+
+    // Output SD Information
+    SDInformation(10);
 
     // Define Pins.
     InitialiseProgrammer(PIN_SCK, PIN_RX, PIN_TX, PIN_RESET, PIN_EN, PIN_VDD);
