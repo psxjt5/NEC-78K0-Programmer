@@ -414,6 +414,8 @@ void FindBlankAreas() {
             SDWriteLineFile(String(High, HEX) + ", " + String(Mid, HEX) + ", " + String(Low, HEX) + ", 0x??");
         }
     }
+
+    SDCloseFile();
 }
 
 
