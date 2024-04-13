@@ -115,6 +115,9 @@ bool GetCurrentStatus();
 bool Write(byte Low, byte Mid, byte High, byte Data);
 void PowerDownChip();
 
+// RE Utilities
+void FindBlankAreas();
+
 // Utility Subroutines
 void Delay(PROG_DELAY Delay, bool Microseconds = false);
 void ClockPulse();

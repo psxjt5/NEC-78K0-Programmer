@@ -398,6 +398,19 @@ void PowerDownChip() {
 }
 
 
+void FindBlankAreas() {
+    byte High = 0x00;
+    byte Mid = 0x00;
+    byte Low = 0x00;
+
+    while (High != 0xFF && Mid != 0xFF && Low != 0xFF) {
+        if (Write(Low, Mid, High, 0xFF)) {
+            
+        }
+    }
+}
+
+
 void Delay(PROG_DELAY Delay, bool Microseconds) {
 
     if (!Microseconds) {
