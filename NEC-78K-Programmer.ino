@@ -23,7 +23,7 @@ void setup() {
     InitialiseConsole(19200, true);
 
     // Initialise SD
-    InitialiseSD(10);
+    SDInitialise(10);
 
     // Output SD Information
     SDInformation(10);

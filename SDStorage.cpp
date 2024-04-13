@@ -5,7 +5,7 @@ Sd2Card card;
 SdVolume volume;
 SdFile root;
 
-bool InitialiseSD(int PIN_CS) {
+bool SDInitialise(int PIN_CS) {
     if (!SD.begin(PIN_CS)) {
         return true;
     }
@@ -70,7 +70,7 @@ void SDInformation(int PIN_CS) {
     }
 }
 
-bool OpenFile(String Path) {
+bool SDOpenFile(String Path) {
     currentFile = SD.open(Path.c_str(), FILE_WRITE);
 
     if (currentFile) {
@@ -80,6 +80,10 @@ bool OpenFile(String Path) {
     return false;
 }
 
-void CloseFile() {
+void SDWriteLineFile(String Text) {
+    currentFile.println(Text);
+}
+
+void SDCloseFile() {
     currentFile.close();
 }

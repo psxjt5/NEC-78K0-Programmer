@@ -10,7 +10,8 @@ extern Sd2Card card;
 extern SdVolume volume;
 extern SdFile root;
 
-bool InitialiseSD(int PIN_CS);
+bool SDInitialise(int PIN_CS);
 void SDInformation(int PIN_CS);
-bool OpenFile(String Path);
-void CloseFile();
+bool SDOpenFile(String Path);
+void SDWriteLineFile(String Text);
+void SDCloseFile();
