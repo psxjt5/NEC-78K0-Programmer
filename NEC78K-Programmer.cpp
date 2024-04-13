@@ -405,7 +405,7 @@ void FindBlankAreas() {
 
     while (High != 0xFF && Mid != 0xFF && Low != 0xFF) {
         if (Write(Low, Mid, High, 0xFF)) {
-            
+
         }
     }
 }
