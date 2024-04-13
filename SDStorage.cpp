@@ -60,7 +60,7 @@ void SDInformation(int PIN_CS) {
         OutputToConsole("Type: " + Type);
         OutputToConsole("Clusters: " + Clusters);
         OutputToConsole("Blocks: " + Blocks);
-        OutputToConsole("Total Blocks:" + TotalBlocks);
+        OutputToConsole("Total Blocks: " + TotalBlocks);
         OutputToConsole("File System: " + FSName);
         OutputToConsole("Size (Kb): " + SizeKb);
         OutputToConsole("Size (Mb): " + SizeMb);
@@ -78,4 +78,8 @@ bool OpenFile(String Path) {
     }
 
     return false;
+}
+
+void CloseFile() {
+    currentFile.close();
 }

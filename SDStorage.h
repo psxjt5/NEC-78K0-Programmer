@@ -13,3 +13,4 @@ extern SdFile root;
 bool InitialiseSD(int PIN_CS);
 void SDInformation(int PIN_CS);
 bool OpenFile(String Path);
+void CloseFile();
