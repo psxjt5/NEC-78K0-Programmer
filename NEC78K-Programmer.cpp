@@ -403,9 +403,9 @@ void FindBlankAreas() {
     byte Mid = 0x00;
     byte Low = 0x00;
 
-    SDOpenFile("BlankAreas.csv");
 
     while (High != 0xFF && Mid != 0xFF && Low != 0xFF) {
+        SDOpenFile("BlankAreas.csv");
         if (Write(Low, Mid, High, 0xFF)) {
             SDWriteLineFile(String(High, HEX) + ", " + String(Mid, HEX) + ", " + String(Low, HEX) + ", 0xFF");
         }
@@ -430,10 +430,10 @@ void FindBlankAreas() {
                 }
             }
         }
+        SDCloseFile();
     }
-    
+
     // Done
-    SDCloseFile();
     return;
 }
 

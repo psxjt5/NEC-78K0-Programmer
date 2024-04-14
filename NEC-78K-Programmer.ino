@@ -40,20 +40,23 @@ void loop() {
 
         if (Serial.read() == 'A') {
             // Power on and select Comms Mode.
-            PowerOnChip();
-            SelectCommunicationMethod(PROG_MODE_3IO_C0);
+            // PowerOnChip();
+            // SelectCommunicationMethod(PROG_MODE_3IO_C0);
 
-            // Synchronisation Detection Processing.
-            if (!SynchronisationDetectionProcessing()) {
-                PowerDownChip();
-                return;
-            }
+            // // Synchronisation Detection Processing.
+            // if (!SynchronisationDetectionProcessing()) {
+            //     PowerDownChip();
+            //     return;
+            // }
           
-            // Set the Oscillation Frequency.
-            if (!OscillationFrequencySetting(1, 0, 0, 5)) {
-                PowerDownChip();
-                return;
-            }
+            // // Set the Oscillation Frequency.
+            // if (!OscillationFrequencySetting(1, 0, 0, 5)) {
+            //     PowerDownChip();
+            //     return;
+            // }
+
+            // Find the Blank Areas
+            FindBlankAreas();
 
             // Request the Silicon Signature Data
             // if (!GetSiliconSignatureData()) {
@@ -65,10 +68,10 @@ void loop() {
             //PrintSiliconSignature();
 
             // Write to a Memory Location
-            if (!Write(0, 0, 0, 0xFF)) {
-                PowerDownChip();
-                return;
-            }
+            // if (!Write(0, 0, 0, 0xFF)) {
+            //     PowerDownChip();
+            //     return;
+            // }
 
             // Set the Flash Erase Time Frequency.
             // if (!FlashEraseTimeSetting(2, 0, 0, 1)) {
