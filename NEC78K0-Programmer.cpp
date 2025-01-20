@@ -405,17 +405,19 @@ void FindBlankAreas() {
 
 
     while (!(High == 0xFF && Mid == 0xFF && Low == 0xFF)) {
-        if (!SDOpenFile("ba.csv")) {
-            OutputToConsole("File Opening Error");
-            return;
-        }
+        // if (!SDOpenFile("ba.csv")) {
+        //     OutputToConsole("File Opening Error");
+        //     return;
+        // }
 
         if (Write(Low, Mid, High, 0xFF)) {
-            SDWriteLineFile(String(High, HEX) + ", " + String(Mid, HEX) + ", " + String(Low, HEX) + ", 0xFF");
+            //SDWriteLineFile(String(High, HEX) + ", " + String(Mid, HEX) + ", " + String(Low, HEX) + ", 0xFF");
+            OutputToConsole(String(High, HEX) + ", " + String(Mid, HEX) + ", " + String(Low, HEX) + ", 0xFF");
         }
         else
         {
-            SDWriteLineFile(String(High, HEX) + ", " + String(Mid, HEX) + ", " + String(Low, HEX) + ", 0x??");
+            //SDWriteLineFile(String(High, HEX) + ", " + String(Mid, HEX) + ", " + String(Low, HEX) + ", 0x??");
+            OutputToConsole(String(High, HEX) + ", " + String(Mid, HEX) + ", " + String(Low, HEX) + ", 0x??");
         }
 
         if (Low != 0xFF) {

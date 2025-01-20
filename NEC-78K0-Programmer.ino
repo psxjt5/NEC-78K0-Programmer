@@ -32,9 +32,6 @@ void setup() {
     InitialiseProgrammer(PIN_SCK, PIN_RX, PIN_TX, PIN_RESET, PIN_EN, PIN_VDD);
 
     OutputToConsole(F("Ready to begin..."));
-}
-
-void loop() {
 
     while (Serial.available() > 0) {
         // Power on and select Comms Mode.
@@ -89,4 +86,7 @@ void loop() {
         // Power Down the Chip Safely.
         // PowerDownChip();
     }
+}
+
+void loop() {
 }
