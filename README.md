@@ -16,7 +16,11 @@ An Arduino-Based Programmer for the NEC/Renesas 78K/0 Microcontoller Series.
 - ```PowerDownChip``` - Powers down the connected 78K/0.
 
 ### RE Functions
-- ```FindBlankAreas``` - Locates blank areas in flash (areas containing ```0xFF```), on the connected 78K/0. Outputs this to the console (SD card output code output commented).
+- ```PrintSiliconSignature``` - Locates blank areas in flash (areas containing ```0xFF```), on the connected 78K/0. Outputs this to the console (SD card output code output commented).
+
+### Console Output
+- ```FindBlankAreas``` - Prints the Solicon Signature Data.
+- ```PrintCurrentStatus``` - Prints the status of the connected 78K/0.
 
 ## Circuitry
 ![78K0ProgrammerSchematic](https://github.com/user-attachments/assets/8c9592f7-980f-4928-a4e6-9960cc3ada82)
