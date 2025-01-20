@@ -1,4 +1,4 @@
-#include "NEC78K-Programmer.h"
+#include "NEC78K0-Programmer.h"
 
 int             PROG_PIN_SCK;           // Connects to: TX
 int             PROG_PIN_RX;            // Connects to: SO10
