@@ -24,10 +24,10 @@ An Arduino-Based Programmer for the NEC/Renesas 78K/0 Microcontoller Series.
 - ```Erase``` - Erases the contents of the flash within the connected 78K/0.
 
 ### RE Functions
-- ```PrintSiliconSignature``` - Locates blank areas in flash (areas containing ```0xFF```), on the connected 78K/0. Outputs this to the console (SD card output code output commented).
+- ```FindBlankAreas``` - Locates blank areas in flash (areas containing ```0xFF```), on the connected 78K/0. Outputs this to the console (SD card output code output commented).
 
 ### Console Output
-- ```FindBlankAreas``` - Prints the Solicon Signature Data.
+- ```PrintSiliconSignature``` - Prints the Solicon Signature Data.
 - ```PrintCurrentStatus``` - Prints the status of the connected 78K/0.
 
 ## Usage
