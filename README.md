@@ -1,6 +1,10 @@
 # NEC 78K/0 Programmer
 An Arduino-Based Programmer for the NEC/Renesas 78K/0 Microcontoller Series.
 
+1. Build the [circuitry](#circuitry).
+2. Configure the setup function with the appropriate [functions](#capabilities).
+3. Connect to a 78K/0 and run.
+
 ## Capabilities
 
 ### Programmer Functions
@@ -25,6 +29,9 @@ An Arduino-Based Programmer for the NEC/Renesas 78K/0 Microcontoller Series.
 ### Console Output
 - ```FindBlankAreas``` - Prints the Solicon Signature Data.
 - ```PrintCurrentStatus``` - Prints the status of the connected 78K/0.
+
+## Usage
+A basic set of functions is currently laid out towards the bottom of the ```setup``` function. These can be modified as required using a combination of the functions presented above.
 
 ## Circuitry
 ![78K0ProgrammerSchematic](https://github.com/user-attachments/assets/8c9592f7-980f-4928-a4e6-9960cc3ada82)
