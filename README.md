@@ -15,6 +15,10 @@ An Arduino-Based Programmer for the NEC/Renesas 78K/0 Microcontoller Series.
 - ```Write``` - Writes data to the specified location within Flash, on the connected 78K/0.
 - ```PowerDownChip``` - Powers down the connected 78K/0.
 
+#### To-Do
+- ```Verify``` - Compares a supplied image against the contents of the flash within the connected 78K/0.
+- ```Erase``` - Erases the contents of the flash within the connected 78K/0.
+
 ### RE Functions
 - ```PrintSiliconSignature``` - Locates blank areas in flash (areas containing ```0xFF```), on the connected 78K/0. Outputs this to the console (SD card output code output commented).
 
